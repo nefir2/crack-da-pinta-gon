@@ -43,7 +43,12 @@ namespace crack_da_pinta_gon
 			string[] substrings = new string[percents];
 			for (int i = 0; i < strb.Length; i++)
 			{
-				if (value[i] == '%') substrings[added] = Cut(value, lastI, i);
+				if (value[i] == '%')
+				{
+					substrings[added] = Cut(value, lastI, i);
+					added++;
+					lastI = i + 1;
+				}
 			}
 			return substrings;
 		}
