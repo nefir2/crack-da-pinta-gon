@@ -52,9 +52,20 @@ namespace crack_da_pinta_gon
 			}
 			return substrings;
 		}
-
+		/// <summary>
+		/// метод вырезающий подстроку по указанным позициям.
+		/// </summary>
+		/// <param name="value">строка, из которой вырезается подстрока.</param>
+		/// <param name="start">точка начала выреза.</param>
+		/// <param name="end">точка окончания выреза.</param>
+		/// <returns>вырезанная подстрока.</returns>
+		/// <exception cref="ArgumentException"/>
+		/// <exception cref="IndexOutOfRangeException"/>
 		private static string Cut(string value, int start, int end)
 		{
+			if (start > end) throw new ArgumentException("начальная позиция для вырезания подстроки не может быть больше конечной позиции.");
+			if (start < 0 || end < 0) throw new IndexOutOfRangeException("начало или конец вырезания не может быть меньше нуля.");
+			
 			string cutted = "";
 			for (int i = start; i < end; i++) cutted.Append(value[i]);
 			return cutted;
