@@ -11,10 +11,44 @@ namespace crack_da_pinta_gon
 	{
 		async static Task Main(string[] args)
 		{
-			string the_folder = GetTheFolder();
-			try { await Task.Run(() => Process.Start(the_folder)); }
-			catch (Exception ex) { Console.WriteLine(ex.Message); }
-			Endl("нажмите любую клавишу для завершения программы . . . ");
+			while (true)
+			{
+				string the_folder = GetTheFolder();
+				try { Process.Start(the_folder); } //await Task.Run(() => Process.Start(the_folder));
+				catch (Exception ex)
+				{
+					ConsoleColor Default = Console.ForegroundColor;
+					Console.ForegroundColor = ConsoleColor.Red;
+					Console.WriteLine("ошибка: " + ex.Message);
+					Console.ForegroundColor = Default;
+				}
+
+
+				if (Retry()) { Console.Clear(); continue; }
+				else break;
+			}
+			//Endl("нажмите любую клавишу для завершения программы . . . ");
+		}
+		private static bool Retry()
+		{
+			while (true)
+			{
+				Console.Write("продолжить выполнение программы? ");
+				var Default = Console.ForegroundColor;
+				Console.ForegroundColor = ConsoleColor.Green;	
+				Console.Write("y");
+				Console.ForegroundColor = Default;				
+				Console.Write("/");
+				Console.ForegroundColor = ConsoleColor.DarkRed; 
+				Console.Write("n");
+				Console.ForegroundColor = Default;
+
+				string ans = Console.ReadKey(true).KeyChar.ToString();
+				Console.WriteLine();
+				if (ans == "y") return true;
+				else if (ans == "n") return false;
+				//else continue;
+			}
 		}
 		private static string GetTheFolder()
 		{
@@ -23,22 +57,26 @@ namespace crack_da_pinta_gon
 				@"\\26k-10-dc10\studocredir",
 				@"C:\",
 			};
-			Console.WriteLine($"выберите одну из имеющихся папок, или введите свою: ");
-			for (int i = 0; i < some_folders.Length; i++) Console.WriteLine($"{i + 1}. {some_folders[i]};");
-			Console.WriteLine($"{some_folders.Length}. ввести свою папку.");
+			Console.WriteLine($"выберите одну из имеющихся папок, или введите свою.");
+			for (int i = 0; i < some_folders.Length; i++) Console.WriteLine($"{i + 1}. \"{some_folders[i]}\";");
+			Console.WriteLine($"{some_folders.Length + 1}. ввести свою папку.");
 			int choice;
 			while (true) 
 			{
 				try
 				{
-					Console.WriteLine("выберите один из вариантов: ");
+					Console.Write("\nвыберите один из вариантов: ");
 					choice = int.Parse(Console.ReadLine()) - 1;
 					if (choice == some_folders.Length)
 					{
-						Console.WriteLine("введите путь папки: ");
-						return Console.ReadLine();
+						Console.Write("введите путь папки: ");
+						return Console.ReadLine(); //встроить парсер пути
 					}
-					else if (choice < 0 || choice > some_folders.Length) continue;
+					else if (choice < 0 || choice > some_folders.Length)
+					{
+						Console.WriteLine("введённое значение оказалось больше или меньше допущенных.");
+						continue;
+					}
 					break;
 				}
 				catch (Exception ex)
@@ -50,11 +88,6 @@ namespace crack_da_pinta_gon
 			string the_folder = some_folders[choice];
 
 			return the_folder;
-		}
-		private static void Endl(string message)
-		{
-			Console.Write(message);
-			Console.ReadKey(true);
 		}
 	}
 }
