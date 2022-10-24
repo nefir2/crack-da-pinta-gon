@@ -23,21 +23,31 @@ namespace crack_da_pinta_gon
 				@"\\26k-10-dc10\studocredir",
 				@"C:\",
 			};
-			//string the_folder = Console.ReadLine();
 			Console.WriteLine($"выберите одну из имеющихся папок, или введите свою: ");
 			for (int i = 0; i < some_folders.Length; i++) Console.WriteLine($"{i + 1}. {some_folders[i]};");
 			Console.WriteLine($"{some_folders.Length}. ввести свою папку.");
-			int choice = int.Parse(Console.ReadLine()) - 1;
-			if (choice == some_folders.Length) 
+			int choice;
+			while (true) 
 			{
-				Console.WriteLine("введите путь папки: ");
-					
+				try
+				{
+					Console.WriteLine("выберите один из вариантов: ");
+					choice = int.Parse(Console.ReadLine()) - 1;
+					if (choice == some_folders.Length)
+					{
+						Console.WriteLine("введите путь папки: ");
+						return Console.ReadLine();
+					}
+					else if (choice < 0 || choice > some_folders.Length) continue;
+					break;
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine(ex.Message);
+					continue;
+				}
 			}
-			if (choice < 0 || choice > some_folders.Length + 1)
-			{
-
-			}
-			string the_folder = some_folders[];
+			string the_folder = some_folders[choice];
 
 			return the_folder;
 		}
