@@ -28,18 +28,18 @@
 //		}
 //		private static bool Retry()
 //		{
+//			Console.Write("продолжить выполнение программы? ");
+//			var Default = Console.ForegroundColor;
+//			Console.ForegroundColor = ConsoleColor.Green;
+//			Console.Write("y");
+//			Console.ForegroundColor = Default;
+//			Console.Write("/");
+//			Console.ForegroundColor = ConsoleColor.DarkRed;
+//			Console.Write("n");
+
+//			Console.ForegroundColor = Default;
 //			while (true)
 //			{
-//				Console.Write("продолжить выполнение программы? ");
-//				var Default = Console.ForegroundColor;
-//				Console.ForegroundColor = ConsoleColor.Green;	
-//				Console.Write("y");
-//				Console.ForegroundColor = Default;				
-//				Console.Write("/");
-//				Console.ForegroundColor = ConsoleColor.DarkRed; 
-//				Console.Write("n");
-//				Console.ForegroundColor = Default;
-
 //				string ans = Console.ReadKey(true).KeyChar.ToString();
 //				Console.WriteLine();
 //				if (ans == "y") return true;
@@ -58,7 +58,7 @@
 //			for (int i = 0; i < some_folders.Length; i++) Console.WriteLine($"{i + 1}. \"{some_folders[i]}\";");
 //			Console.WriteLine($"{some_folders.Length + 1}. ввести свою папку.");
 //			int choice;
-//			while (true) 
+//			while (true)
 //			{
 //				try
 //				{

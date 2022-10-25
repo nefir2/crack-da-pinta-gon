@@ -10,8 +10,24 @@ namespace crack_da_pinta_gon
 	{
 		internal static void Main()
 		{
-			ColorFormat.Write($"%ошибка: %произошла ошибка", ConsoleColor.DarkRed, ConsoleColor.Red);
-			Console.ReadKey(true);
+			do { 
+				ColorFormat.Write($"%ошибка: %произошла ошибка\n", ConsoleColor.DarkRed, ConsoleColor.Red);
+				Console.Write("");
+			} while(Retry());
+		}
+		private static bool Retry()
+		{
+			ConsoleColor Default = Console.ForegroundColor;
+			ColorFormat.Write("продолжить выполнение программы? %y%/%n", ConsoleColor.Green, Default, ConsoleColor.DarkRed);
+			while (true)
+			{
+
+				string ans = Console.ReadKey(true).KeyChar.ToString();
+				Console.WriteLine();
+				if (ans == "y") return true;
+				else if (ans == "n") return false;
+				else continue;
+			}
 		}
 	}
 }

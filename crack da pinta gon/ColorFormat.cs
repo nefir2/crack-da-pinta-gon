@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using static System.Console;
+
 namespace crack_da_pinta_gon
 {
-	class ColorFormat
+	static class ColorFormat
 	{
 		/// <summary>
 		/// выводит строку в консоль через <see cref="Console.Write(string)"/>, с указанными цветами в указанных местах.
@@ -28,7 +30,7 @@ namespace crack_da_pinta_gon
 
 			string[] strings = Parser(value, colors.Length);
 			if (strings.Length - 1 != colors.Length) throw new ArgumentException("");
-			for (int i = 0; i < colors.Length; i++)
+			for (int i = 0; i <= colors.Length; i++)
 			{
 				if (i == 0) Console.Write(strings[i]);
 				else if (i < colors.Length) //not working
@@ -36,7 +38,7 @@ namespace crack_da_pinta_gon
 					Console.Write(strings[i]);
 					Console.ForegroundColor = colors[i];
 				}
-				else Console.Write(strings[i + 1]);
+				else Console.Write(strings[i]); //strings[strings.Length - 1] doesn't working
 			}
 
 			Console.ForegroundColor = Default; //возвращение цвета на изначальный после окончания работы метода.
@@ -59,6 +61,11 @@ namespace crack_da_pinta_gon
 					value = sbvalue.ToString();
 					i++;
 					continue;
+				}
+				else if (i + 1 == value.Length)
+				{
+					if (value[i] == '%') { value = new StringBuilder(value).Remove(i, 1).ToString(); } //а чо делатб то если вдруг какой-то гений решил поставить последний знак цвета? а удалить его.
+					//else if () { } //забыл чо хател сделатб....
 				}
 				else if (value[i] == '%' || i + 1 == value.Length)
 				{
