@@ -11,7 +11,7 @@ namespace crack_da_pinta_gon
 		internal static void Main()
 		{
 			do { 
-				ColorFormat.Write($"%ошибка: %произошла ошибка\n", ConsoleColor.DarkRed, ConsoleColor.Red);
+				ColorFormat.Write($"%ошибка: %произошла ошибка", ConsoleColor.DarkRed, ConsoleColor.Red);
 				Console.Write("");
 			} while(Retry());
 		}

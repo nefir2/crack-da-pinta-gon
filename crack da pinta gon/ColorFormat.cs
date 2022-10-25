@@ -47,7 +47,7 @@ namespace crack_da_pinta_gon
 		/// <remarks> знаки "<c>%</c>" не сохраняются. </remarks>
 		/// <param name="value">строка в которой имеются знаки "<c>%</c>"</param>
 		/// <returns>возвращает подстроки перед знаками "<c>%</c>".</returns>
-		private static string[] Parser(string value, int percents)
+		internal static string[] Parser(string value, int percents)
 		{
 			int added = 0;
 			int lastI = 0;
@@ -86,7 +86,7 @@ namespace crack_da_pinta_gon
 		/// <returns>вырезанная подстрока.</returns>
 		/// <exception cref="ArgumentException"/>
 		/// <exception cref="IndexOutOfRangeException"/>
-		private static string Cut(string value, int start, int end)
+		public static string Cut(string value, int start, int end)
 		{
 			if (start > end) throw new ArgumentException("начальная позиция для вырезания подстроки не может быть больше конечной позиции.");
 			if (start < 0 || end < 0) throw new IndexOutOfRangeException("начало или конец вырезания не может быть меньше нуля.");
