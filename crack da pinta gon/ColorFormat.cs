@@ -29,7 +29,7 @@ namespace crack_da_pinta_gon
 			var Default = Console.ForegroundColor; //получение цвета в консоли перед началом работы метода.
 
 			string[] strings = Parser(value, colors.Length);
-			if (strings.Length - 1 != colors.Length) throw new ArgumentException("");
+			if (strings.Length - 1 != colors.Length) throw new ArgumentException(""); //недописанный эксепшн
 			for (int i = 0; i <= colors.Length; i++)
 			{
 				if (i == 0) Console.Write(strings[i]);
