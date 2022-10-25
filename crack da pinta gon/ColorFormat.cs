@@ -21,14 +21,17 @@ namespace crack_da_pinta_gon
 		/// для подстановки "<c>%</c>" используйте "<c>%%</c>".
 		/// </param>
 		/// <param name="colors">цвета, подставляемые в строку</param>
+		/// <exception cref="ArgumentException"/>
 		public static void Write(string value, params ConsoleColor[] colors)
 		{
 			var Default = Console.ForegroundColor; //получение цвета в консоли перед началом работы метода.
 
-			string[] strings = Parsed(value, colors.Length);
+			string[] strings = Parser(value, colors.Length);
+			if (strings.Length - 1 != colors.Length) throw new ArgumentException("");
 			for (int i = 0; i < colors.Length; i++)
 			{
-				if (i < colors.Length) //not working
+				if (i == 0) Console.Write(strings[i]);
+				else if (i < colors.Length) //not working
 				{
 					Console.Write(strings[i]);
 					Console.ForegroundColor = colors[i];
@@ -42,7 +45,7 @@ namespace crack_da_pinta_gon
 		/// <remarks> знаки "<c>%</c>" не сохраняются. </remarks>
 		/// <param name="value">строка в которой имеются знаки "<c>%</c>"</param>
 		/// <returns>возвращает подстроки перед знаками "<c>%</c>".</returns>
-		private static string[] Parsed(string value, int percents)
+		private static string[] Parser(string value, int percents)
 		{
 			int added = 0;
 			int lastI = 0;
