@@ -9,7 +9,7 @@ namespace crack_da_pinta_gon
 {
 	class Program
 	{
-		async static Task Main(string[] args)
+		static void Main()
 		{
 			while (true)
 			{
@@ -17,10 +17,7 @@ namespace crack_da_pinta_gon
 				try { Process.Start(the_folder); } //await Task.Run(() => Process.Start(the_folder));
 				catch (Exception ex)
 				{
-					ConsoleColor Default = Console.ForegroundColor;
-					Console.ForegroundColor = ConsoleColor.Red;
-					Console.WriteLine("ошибка: " + ex.Message);
-					Console.ForegroundColor = Default;
+					ColorFormat.Write($"%ошибка: {ex.Message}\n", ConsoleColor.Red);
 				}
 
 

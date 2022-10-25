@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace crack_da_pinta_gon
 {
-	class WriteColor
+	class ColorFormat
 	{
 		/// <summary>
 		/// выводит строку в консоль через <see cref="Console.Write(string)"/>, с указанными цветами в указанных местах.
@@ -16,41 +16,55 @@ namespace crack_da_pinta_gon
 		/// сами знаки "<c>%</c>" удаляются из строки.
 		/// </remarks>
 		/// <param name="value">
-		/// строка куда подставляются цвета. <br/>
-		/// для подстановки цвета используйте "<c>%</c>"
+		/// строка куда подставляются цвета. <br/><br/>
+		/// для подстановки цвета используйте "<c>%</c>" <br/>
+		/// для подстановки "<c>%</c>" используйте "<c>%%</c>".
 		/// </param>
 		/// <param name="colors">цвета, подставляемые в строку</param>
 		public static void Write(string value, params ConsoleColor[] colors)
 		{
 			var Default = Console.ForegroundColor; //получение цвета в консоли перед началом работы метода.
 
+			string[] strings = Parsed(value, colors.Length);
 			for (int i = 0; i < colors.Length; i++)
 			{
-
+				if (i < colors.Length) //not working
+				{
+					Console.Write(strings[i]);
+					Console.ForegroundColor = colors[i];
+				}
+				else Console.Write(strings[i + 1]);
 			}
 
 			Console.ForegroundColor = Default; //возвращение цвета на изначальный после окончания работы метода.
 		}
-		/// <summary>
-		/// разделение строки на подстроки до указанных позиций знака "<c>%</c>".
-		/// </summary>
+		/// <summary> разделение строки на подстроки до указанных позиций знака "<c>%</c>". </summary>
+		/// <remarks> знаки "<c>%</c>" не сохраняются. </remarks>
 		/// <param name="value">строка в которой имеются знаки "<c>%</c>"</param>
 		/// <returns>возвращает подстроки перед знаками "<c>%</c>".</returns>
 		private static string[] Parsed(string value, int percents)
 		{
-			StringBuilder strb = new StringBuilder(value);
 			int added = 0;
 			int lastI = 0;
-			string[] substrings = new string[percents];
-			for (int i = 0; i < strb.Length; i++)
+			string[] substrings = new string[percents + 1];
+			for (int i = 0; i < value.Length; i++)
 			{
-				if (value[i] == '%')
+				if (i + 1 != value.Length && value[i] == '%' && value[i + 1] == '%')  //если два процента подряд - удаление одного из них, и пропуск вставки цвета.
+				{
+					StringBuilder sbvalue = new StringBuilder(value);
+					sbvalue.Remove(i, 1);
+					value = sbvalue.ToString();
+					i++;
+					continue;
+				}
+				else if (value[i] == '%' || i + 1 == value.Length)
 				{
 					substrings[added] = Cut(value, lastI, i);
 					added++;
 					lastI = i + 1;
 				}
 			}
+			//if (added != percents) throw new ArgumentException("количество подстрок не соответствует количеству процентов.");
 			return substrings;
 		}
 		/// <summary>
@@ -68,7 +82,7 @@ namespace crack_da_pinta_gon
 			if (start < 0 || end < 0) throw new IndexOutOfRangeException("начало или конец вырезания не может быть меньше нуля.");
 			
 			string cutted = "";
-			for (int i = start; i < end; i++) cutted.Append(value[i]);
+			for (int i = start; i < end; i++) cutted += value[i];
 			return cutted;
 		}
 	}
