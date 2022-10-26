@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using static System.Console;
-
 namespace crack_da_pinta_gon
 {
 	static class ColorFormat
@@ -24,21 +22,29 @@ namespace crack_da_pinta_gon
 		/// </param>
 		/// <param name="colors">цвета, подставляемые в строку</param>
 		/// <exception cref="ArgumentException"/>
-		public static void Write(string value, params ConsoleColor[] colors)
+		public static void Write(string value, params ConsoleColor[] colors) //переделать вместо знака "%", на "%{номер параметра}".
+																			 //пример: "%0 %1 %9 %{10} %{1241}".
+																			 //если после знака % не идёт ни фигурная скобка, ни целочисленное значение -
+																			 //это обычный знак "%" который надо вывести.
 		{
 			var Default = Console.ForegroundColor; //получение цвета в консоли перед началом работы метода.
-
+			if (CountOfPercents(value) < colors.Length) throw new ArgumentException("количество процентов не может отличаться от количества подставляемых цветов.");
 			string[] strings = Parser(value, colors.Length);
-			if (strings.Length - 1 != colors.Length) throw new ArgumentException(""); //недописанный эксепшн
-			for (int i = 0; i <= colors.Length; i++)
+			int usedColors = 0;
+			for (int i = 0; i < strings.Length; i++)
 			{
 				if (i == 0) Console.Write(strings[i]);
 				else if (i < colors.Length) //not working
 				{
+					Console.ForegroundColor = colors[usedColors];
 					Console.Write(strings[i]);
-					Console.ForegroundColor = colors[i];
+					usedColors++;
 				}
-				else Console.Write(strings[i]); //strings[strings.Length - 1] doesn't working
+				else
+				{
+					Console.ForegroundColor = colors[colors.Length - 1];
+					Console.Write(strings[i]); //strings[strings.Length - 1] doesn't working
+				}
 			}
 
 			Console.ForegroundColor = Default; //возвращение цвета на изначальный после окончания работы метода.
@@ -62,16 +68,16 @@ namespace crack_da_pinta_gon
 					i++;
 					continue;
 				}
-				else if (i + 1 == value.Length)
-				{
-					if (value[i] == '%') { value = new StringBuilder(value).Remove(i, 1).ToString(); } //а чо делатб то если вдруг какой-то гений решил поставить последний знак цвета? а удалить его.
-					//else if () { } //забыл чо хател сделатб....
-				}
 				else if (value[i] == '%' || i + 1 == value.Length)
 				{
-					substrings[added] = Cut(value, lastI, i);
-					added++;
-					lastI = i + 1;
+					if (value[i] == '%' && i + 1 == value.Length) value = new StringBuilder(value).Remove(i, 1).ToString(); //а чо делатб то если вдруг какой-то гений решил поставить последний знак цвета? а удалить его.
+					else
+					{
+						if (i + 1 == value.Length) i++;
+						substrings[added] = Cut(value, lastI, i);
+						added++;
+						lastI = i + 1;
+					}
 				}
 			}
 			//if (added != percents) throw new ArgumentException("количество подстрок не соответствует количеству процентов.");
@@ -94,6 +100,24 @@ namespace crack_da_pinta_gon
 			string cutted = "";
 			for (int i = start; i < end; i++) cutted += value[i];
 			return cutted;
+		}
+		/// <summary>
+		/// метод для проверки количество знака "%".
+		/// </summary>
+		/// <remarks>
+		/// учитываются одиночные проценты ("%"), и не учитываются два идущих процента подряд ("%%").
+		/// </remarks>
+		/// <param name="value">строка, в которой идёт проверка.</param>
+		/// <returns>количество знаков "%", без учёта "%%".</returns>
+		public static int CountOfPercents(string value)
+		{
+			int counter = 0;
+			for (int i = 0; i < value.Length; i++)
+			{
+				if (i + 1 != value.Length && value[i] != '%' && value[i + 1] != '%') counter++;
+				else if (value[i] == '%') counter++;
+			}
+			return counter;
 		}
 	}
 }
