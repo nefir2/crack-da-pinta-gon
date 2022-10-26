@@ -10,11 +10,11 @@ namespace crack_da_pinta_gon
 	{
 		internal static void Main()
 		{
-			//ColorFormat.Write($"{{int a}}");
-			//do
-			//{
-			//	ColorFormat.Write($"%0ошибка: %1&0произошла ошибка\n", ConsoleColor.DarkRed, ConsoleColor.Red);
-			//} while (Retry());
+			ColorFormat.Write($"{{int a}}");
+			do
+			{
+				ColorFormat.Write($"%0ошибка: %1&0произошла ошибка\n", ConsoleColor.DarkRed, ConsoleColor.Red);
+			} while (Retry());
 			Console.WriteLine("{0} {0} {1}", 0, 1);
 			Console.ReadKey();
 		}
