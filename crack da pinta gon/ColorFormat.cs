@@ -26,8 +26,11 @@ namespace crack_da_pinta_gon
 																			 //пример: "%0 %1 %9 %{10} %{1241}".
 																			 //если после знака % не идёт ни фигурная скобка, ни целочисленное значение -
 																			 //это обычный знак "%" который надо вывести.
+
+																			 //добавить изменение цвета фона букв, с помощью &{номер параметра}.
 		{
 			var Default = Console.ForegroundColor; //получение цвета в консоли перед началом работы метода.
+
 			if (CountOfPercents(value) < colors.Length) throw new ArgumentException("количество процентов не может отличаться от количества подставляемых цветов.");
 			string[] strings = Parser(value, colors.Length);
 			int usedColors = 0;
