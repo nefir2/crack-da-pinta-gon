@@ -22,7 +22,7 @@ namespace crack_da_pinta_gon
 		/// </param>
 		/// <param name="colors">цвета, подставляемые в строку</param>
 		/// <exception cref="ArgumentException"/>
-		public static void Write(string value, params ConsoleColor[] colors) //переделать вместо знака "%", на "%{номер параметра}".
+		public static void Write(string value, params ConsoleColor[] colors) //переделать вместо знака "%", на "%{номер параметра}",
 																			 //пример: "%0 %1 %9 %{10} %{1241}".
 																			 //если после знака % не идёт ни фигурная скобка, ни целочисленное значение -
 																			 //это обычный знак "%" который надо вывести.
