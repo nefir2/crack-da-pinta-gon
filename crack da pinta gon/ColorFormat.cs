@@ -9,7 +9,28 @@ namespace crack_da_pinta_gon
 	static class ColorFormat
 	{
 		/// <summary>
-		/// выводит строку с указанными цветами с помощью знаков "<c>%</c>" и "<c>&</c>".
+		/// стандартное значение цвета знаков.
+		/// </summary>
+		private static ConsoleColor defaultFore;
+		/// <summary>
+		/// стандартное значение цвета фона знаков.
+		/// </summary>
+		private static ConsoleColor defaultBack;
+
+		public static ConsoleColor DefaultFore { get => defaultFore; }
+		public static ConsoleColor DefaultBack { get => defaultBack; }
+
+		/// <summary>
+		/// статический конструктор для выдачи значений полям.
+		/// </summary>
+		static ColorFormat()
+		{
+			defaultFore = Console.ForegroundColor;
+			defaultBack = Console.BackgroundColor;
+		}
+
+		/// <summary>
+		/// выводит строку с указанными цветами с помощью знаков процент (%) и амперсанд.
 		/// </summary>
 		/// <param name="value"></param>
 		/// <param name="setWithEndDefaultColor"></param>
@@ -26,22 +47,15 @@ namespace crack_da_pinta_gon
 			}
 			else Write(value, colors);
 		}
-		//переделать вместо знака "%", на "%{номер параметра}",
-		//пример: "%0 %1 %9 %{10} %{1241}".
-		//если после знака % не идёт ни фигурная скобка, ни целочисленное значение -
-		//это обычный знак "%" который надо вывести
-
-		//добавить изменение цвета фона букв, с помощью &{номер параметра}.
-
-		///// <summary> разделение строки на подстроки до указанных позиций знака "<c>%</c>". </summary>
-		///// <remarks> знаки "<c>%</c>" не сохраняются. </remarks>
-		///// <param name="value">строка в которой имеются знаки "<c>%</c>"</param>
-		///// <returns>возвращает подстроки перед знаками "<c>%</c>".</returns>
-		
 		/// <summary>
-		/// asd
+		/// выводит строку с указанными цветами с помощью знаков процент (%) и амперсанд. <br/>
+		/// пример: <example>"%0"</example>
 		/// </summary>
-		/// <param name="value"></param>
+		/// <remarks>
+		/// для того чтобы изменить цвет на для знаков используйте процент, 
+		/// для изменения фонового цвета используйте амперсанд.
+		/// </remarks>
+		/// <param name="value">строка, в которой используются цвета</param>
 		/// <param name="colors"></param>
 		public static void Write(string value, params ConsoleColor[] colors)
 		{
@@ -80,7 +94,10 @@ namespace crack_da_pinta_gon
 			}
 		}
 		/// <summary> изменяет цвет последующих знаков на указанный в параметрах. </summary>
-		/// <param name="isPercent">если <see cref="true"/> используется <see cref="Console.ForegroundColor"/>, иначе используется <see cref="Console.BackgroundColor"/>. </param>
+		/// <param name="isPercent">
+		/// если <see cref="true"/> используется <see cref="Console.ForegroundColor"/>, <br/>
+		/// иначе используется <see cref="Console.BackgroundColor"/>. 
+		/// </param>
 		/// <param name="color">цвет, на который меняется текст или фон текста.</param>
 		public static void ChangeColor(bool isPercent, ConsoleColor color)
 		{
@@ -104,24 +121,6 @@ namespace crack_da_pinta_gon
 			string cutted = "";
 			for (int i = start; i < end; i++) cutted += value[i];
 			return cutted;
-		}
-		/// <summary>
-		/// метод для проверки количество знака "%".
-		/// </summary>
-		/// <remarks>
-		/// учитываются одиночные проценты ("%"), и не учитываются два идущих процента подряд ("%%").
-		/// </remarks>
-		/// <param name="value">строка, в которой идёт проверка.</param>
-		/// <returns>количество знаков "%", без учёта "%%".</returns>
-		public static int CountOfPercents(string value)
-		{
-			int counter = 0;
-			for (int i = 0; i < value.Length; i++)
-			{
-				if (i + 1 != value.Length && value[i] != '%' && value[i + 1] != '%') counter++;
-				else if (value[i] == '%') counter++;
-			}
-			return counter;
 		}
 	}
 }
