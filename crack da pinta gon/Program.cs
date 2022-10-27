@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,13 +10,40 @@ namespace crack_da_pinta_gon
 {
 	class Program
 	{
+		private static bool isInputed;
+		private static string[] some_folders;
+		private const string the_base_path = @"C:\users\1\desktop\examples.txt"; //@"\\26k-10-dc10\studocredir\ахтамовв\examples.txt"
 		static void Main()
 		{
+			if (File.Exists(the_base_path)) some_folders = File.ReadAllLines(the_base_path);
+			else some_folders = new string[] { };
 			while (true)
 			{
 				string the_folder = GetTheFolder();
-				try { Process.Start(the_folder); } //await Task.Run(() => Process.Start(the_folder));
-				catch (Exception ex) { ColorFormat.Write($"%{{0}}ошибка: {ex.Message}\n", true, ConsoleColor.Red); }
+				try 
+				{ 
+					
+					Process.Start(the_folder); //await Task.Run(() => Process.Start(the_folder));
+					if (isInputed)
+					{
+						File.AppendAllText(the_base_path, the_folder + "\n");
+						isInputed = false;
+					}
+					if (File.Exists(the_base_path)) some_folders = File.ReadAllLines(the_base_path);
+					//if (!isExcepted)
+					//{
+
+					//using (FileStream fileStream = new FileStream(@"C:\users\1\desktop\examples.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite)) //@"\\26k-10-dc10\studocredir\ахтамовв\examples.txt"
+					//{
+					//	//fileStream.Read
+					//}
+					//}
+				} 
+				catch (Exception ex) 
+				{ 
+					ColorFormat.Write($"%{{0}}ошибка: {ex.Message}\n", true, ConsoleColor.Red);
+					
+				}
 
 				if (Retry()) { Console.Clear(); continue; }
 				else break;
@@ -36,14 +64,14 @@ namespace crack_da_pinta_gon
 		}
 		private static string GetTheFolder()
 		{
-			string[] some_folders = new string[]
-			{
-				@"\\26k-10-dc10\studocredir",
-				@"C:\",
-			};
+			//string[] some_folders = new string[]
+			//{
+			//	@"\\26k-10-dc10\studocredir",
+			//	@"C:\",
+			//};
 			Console.WriteLine("выберите одну из имеющихся папок, или введите свою.");
 			for (int i = 0; i < some_folders.Length; i++) ColorFormat.Write($"{i + 1}. %0\"{some_folders[i]}\";\n", true, i % 2 == 0 ? ConsoleColor.DarkBlue : ConsoleColor.DarkRed);
-			Console.WriteLine($"{some_folders.Length + 1}. ввести свою папку.");
+			ColorFormat.Write($"{some_folders.Length + 1}. %0ввести свою папку.\n", true, ConsoleColor.DarkGreen);
 			int choice;
 			while (true)
 			{
@@ -54,11 +82,13 @@ namespace crack_da_pinta_gon
 					if (choice == some_folders.Length)
 					{
 						Console.Write("введите путь папки: ");
+						isInputed = true;
 						return Console.ReadLine(); //встроить парсер пути
 					}
 					else if (choice < 0 || choice > some_folders.Length)
 					{
 						//Console.WriteLine();
+						
 						ColorFormat.Write("%0ошибка: введённое значение оказалось больше или меньше допущенных.\n", true, ConsoleColor.Red);
 						continue;
 					}
@@ -66,6 +96,7 @@ namespace crack_da_pinta_gon
 				}
 				catch (Exception ex)
 				{
+					
 					ColorFormat.Write("%0ошибка: " + ex.Message, true, ConsoleColor.Red);
 					//Console.WriteLine(ex.Message);
 					continue;
