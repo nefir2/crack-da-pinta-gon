@@ -22,17 +22,12 @@ namespace crack_da_pinta_gon
 		/// </param>
 		/// <param name="colors">цвета, подставляемые в строку</param>
 		/// <exception cref="ArgumentException"/>
-		public static void Write(string value, params ConsoleColor[] colors) //переделать вместо знака "%", на "%{номер параметра}",
-																			 //пример: "%0 %1 %9 %{10} %{1241}".
-																			 //если после знака % не идёт ни фигурная скобка, ни целочисленное значение -
-																			 //это обычный знак "%" который надо вывести.
-
-																			 //добавить изменение цвета фона букв, с помощью &{номер параметра}.
+		public static void Write(string value, params ConsoleColor[] colors)
 		{
 			var Default = Console.ForegroundColor; //получение цвета в консоли перед началом работы метода.
 
 			if (CountOfPercents(value) < colors.Length) throw new ArgumentException("количество процентов не может отличаться от количества подставляемых цветов.");
-			string[] strings = Parser(value, colors.Length);
+			string[] strings = Parser(value, colors); //.Length
 			int usedColors = 0;
 			for (int i = 0; i < strings.Length; i++)
 			{
@@ -52,36 +47,61 @@ namespace crack_da_pinta_gon
 
 			Console.ForegroundColor = Default; //возвращение цвета на изначальный после окончания работы метода.
 		}
-		/// <summary> разделение строки на подстроки до указанных позиций знака "<c>%</c>". </summary>
-		/// <remarks> знаки "<c>%</c>" не сохраняются. </remarks>
-		/// <param name="value">строка в которой имеются знаки "<c>%</c>"</param>
-		/// <returns>возвращает подстроки перед знаками "<c>%</c>".</returns>
-		internal static string[] Parser(string value, int percents)
+		//переделать вместо знака "%", на "%{номер параметра}",
+		//пример: "%0 %1 %9 %{10} %{1241}".
+		//если после знака % не идёт ни фигурная скобка, ни целочисленное значение -
+		//это обычный знак "%" который надо вывести
+
+		//добавить изменение цвета фона букв, с помощью &{номер параметра}.
+
+		///// <summary> разделение строки на подстроки до указанных позиций знака "<c>%</c>". </summary>
+		///// <remarks> знаки "<c>%</c>" не сохраняются. </remarks>
+		///// <param name="value">строка в которой имеются знаки "<c>%</c>"</param>
+		///// <returns>возвращает подстроки перед знаками "<c>%</c>".</returns>
+		internal static string[] Parser(string value, ConsoleColor[] colors)
 		{
 			int added = 0;
 			int lastI = 0;
-			string[] substrings = new string[percents + 1];
+			//string[] substrings = new string[percents + 1];
 			for (int i = 0; i < value.Length; i++)
 			{
-				if (i + 1 != value.Length && value[i] == '%' && value[i + 1] == '%')  //если два процента подряд - удаление одного из них, и пропуск вставки цвета.
+				if (value[i] == '%' && i + 1 != value.Length)
 				{
-					StringBuilder sbvalue = new StringBuilder(value);
-					sbvalue.Remove(i, 1);
-					value = sbvalue.ToString();
-					i++;
-					continue;
-				}
-				else if (value[i] == '%' || i + 1 == value.Length)
-				{
-					if (value[i] == '%' && i + 1 == value.Length) value = new StringBuilder(value).Remove(i, 1).ToString(); //а чо делатб то если вдруг какой-то гений решил поставить последний знак цвета? а удалить его.
-					else
+					if (int.TryParse(value[i + 1].ToString(), out int arg))
 					{
-						if (i + 1 == value.Length) i++;
-						substrings[added] = Cut(value, lastI, i);
-						added++;
-						lastI = i + 1;
+						StringBuilder vl = new StringBuilder(value);
+						vl.Remove(i, value.Length - i);
+						Console.Write(vl);
+						//for (int j = 0; j < i; j++)
+						//{
+
+						//}
+					}
+					else if (value[i + 1] == '{')
+					{
+
 					}
 				}
+
+				//if (i + 1 != value.Length && value[i] == '%' && value[i + 1] == '%')  //если два процента подряд - удаление одного из них, и пропуск вставки цвета.
+				//{
+				//	StringBuilder sbvalue = new StringBuilder(value);
+				//	sbvalue.Remove(i, 1);
+				//	value = sbvalue.ToString();
+				//	i++;
+				//	continue;
+				//}
+				//else if (value[i] == '%' || i + 1 == value.Length)
+				//{
+				//	if (value[i] == '%' && i + 1 == value.Length) value = new StringBuilder(value).Remove(i, 1).ToString(); //а чо делатб то если вдруг какой-то гений решил поставить последний знак цвета? а удалить его.
+				//	else
+				//	{
+				//		if (i + 1 == value.Length) i++;
+				//		substrings[added] = Cut(value, lastI, i);
+				//		added++;
+				//		lastI = i + 1;
+				//	}
+				//}
 			}
 			//if (added != percents) throw new ArgumentException("количество подстрок не соответствует количеству процентов.");
 			return substrings;
