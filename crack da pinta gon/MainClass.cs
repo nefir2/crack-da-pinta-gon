@@ -10,10 +10,9 @@ namespace crack_da_pinta_gon
 	{
 		internal static void Main()
 		{
-			ColorFormat.Write($"{{int a}}");
 			do
 			{
-				ColorFormat.Write($"%0ошибка: %1&0произошла ошибка\n", ConsoleColor.DarkRed, ConsoleColor.Red);
+				ColorFormat.Write($"%%1&0ошибка%&: %0&1произошла ошибка\n", true, ConsoleColor.Black, ConsoleColor.White);
 			} while (Retry());
 			Console.WriteLine("{0} {0} {1}", 0, 1);
 			Console.ReadKey();
@@ -21,7 +20,7 @@ namespace crack_da_pinta_gon
 		private static bool Retry()
 		{
 			ConsoleColor Default = Console.ForegroundColor;
-			ColorFormat.Write("продолжить выполнение программы? %y%/%n", ConsoleColor.Green, Default, ConsoleColor.DarkRed);
+			ColorFormat.Write("продолжить выполнение программы? %0y%1/%2n", ConsoleColor.Green, Default, ConsoleColor.DarkRed);
 			while (true)
 			{
 
