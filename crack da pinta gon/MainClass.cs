@@ -8,15 +8,13 @@ namespace crack_da_pinta_gon
 {
 	class MainClass
 	{
-		//ColorFormat.Write()
-		//do
-		//{
-		//	ColorFormat.Write($"%%1&0ошибка%&: %0&1произошла ошибка\n", true, ConsoleColor.Black, ConsoleColor.White);
-		//} while (Retry());
+		
 		internal static void Main()
 		{
-			ColorFormat.Write("%1&0введите какой-нибудь текст: ", true, ConsoleColor.Green, ConsoleColor.DarkMagenta);
-			Console.ReadLine();
+			do
+			{
+				ColorFormat.Write($"%%1&0ошибка%&: %0&1произошла ошибка\n", true, ConsoleColor.Black, ConsoleColor.White);
+			} while (Retry());
 
 			Console.ReadKey();
 		}
