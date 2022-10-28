@@ -13,7 +13,15 @@ namespace crack_da_pinta_gon
 		/// </summary>
 		private static ConsoleColor defaultBack;
 
+		/// <summary>
+		/// стандартное значение цвета текста.
+		/// </summary>
+		/// <returns>цвет текста в консоли перед началом работы методов.</returns>
 		public static ConsoleColor DefaultFore { get => defaultFore; }
+		/// <summary>
+		/// стандартное значение цвета фона текста.
+		/// </summary>
+		/// <returns>цвет фона текста в консоли перед началом работы методов. </returns>
 		public static ConsoleColor DefaultBack { get => defaultBack; }
 
 		/// <summary>
