@@ -43,10 +43,10 @@ namespace crack_da_pinta_gon
 		/// или амперсанд вместо процента для смены фона.
 		/// </remarks>
 		/// <param name="value">строка, в которой используются цвета.</param>
-		/// <param name="setWithEndDefaultColor">
+		/// <param name="doNotSetWithEndDefaultColor">
 		/// если значение <see langword="true"/>, <br/>
 		/// то после выведенной строки - <br/>
-		/// цвет текста и фона возвращается на тот, <br/>
+		/// цвет текста и фона не будет возвращается на тот, <br/>
 		/// что был перед началом работы метода.
 		/// </param>
 		/// <param name="colors">
@@ -54,10 +54,10 @@ namespace crack_da_pinta_gon
 		/// на которые ссылаются специальные знаки.
 		/// </param>
 		/// <exception cref="ArgumentException"/>
-		public static void Write(string value, bool setWithEndDefaultColor, params ConsoleColor[] colors)
+		public static void Write(string value, bool doNotSetWithEndDefaultColor, params ConsoleColor[] colors)
 		{
-			Write(value, colors); //парс текста и подстановка цветов.
-			if (setWithEndDefaultColor)
+			Writer(value, colors); //парс текста и подстановка цветов.
+			if (!doNotSetWithEndDefaultColor) //не возвращать цвет если true
 			{
 				Console.ForegroundColor = DefaultFore; //возвращение цветов на те, что были до начала использования метода, после окончания работы метода.
 				Console.BackgroundColor = DefaultBack;
@@ -69,12 +69,29 @@ namespace crack_da_pinta_gon
 		/// </summary>
 		/// <remarks>
 		/// для определения места вывода используйте %{номер параметра цвета}. <br/>
-		/// или амперсанд вместо процента для смены фона.
+		/// или амперсанд вместо процента для смены фона. <br/><br/>
+		/// 
+		/// после завершения работы восстанавливает цвет на тот, <br/>
+		/// что был перед первым вызовом класса.
 		/// </remarks>
 		/// <param name="value">строка, в которой используются цвета</param>
 		/// <param name="colors">параметры подставляемых цветов, на которые ссылаются спец-знаки.</param>
 		/// <exception cref="ArgumentException"/>
 		public static void Write(string value, params ConsoleColor[] colors)
+		{
+			Writer(value, colors);
+			Console.ForegroundColor = DefaultFore; //возвращение цветов на те, что были до начала использования метода, после окончания работы метода.
+			Console.BackgroundColor = DefaultBack;
+		}
+		/// <summary>
+		/// скрытый метод парсера.
+		/// </summary>
+		/// <remarks>
+		/// скрыт и переименован из-за совпадения сигнатуры с методом-оболочкой.
+		/// </remarks>
+		/// <param name="value">строка, в которой используются цвета.</param>
+		/// <param name="colors">параметры подставляемых цветов, на которые ссылаются спец-знаки.</param>
+		private static void Writer(string value, params ConsoleColor[] colors)
 		{
 			//сделать проверку на неуказанные позиции цветов, и если цвета всего два, то первый из них цвет текста, а второй - цвет фона.
 

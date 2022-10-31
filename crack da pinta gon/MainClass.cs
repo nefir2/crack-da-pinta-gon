@@ -40,7 +40,7 @@ namespace crack_da_pinta_gon
 		private static void checkWho(Process[] processes)
 		{
 			Process[] now = Process.GetProcesses();
-			int count = (processes.Length > now.Length ? now.Length : processes.Length);
+			int count = processes.Length > now.Length ? now.Length : processes.Length;
 			for (int i = 0; i < count; i++)
 			{
 				Console.WriteLine($"Process number = {i}");
