@@ -36,7 +36,7 @@ namespace crack_da_pinta_gon
 		/// <exception cref="IndexOutOfRangeException"/>
 		private static T[] Swap<T>(T[] array, int firstPosition, int secondPosition)
 		{
-			if (firstPosition > array.Length || secondPosition > array.Length || firstPosition < 0 || secondPosition < 0) throw new IndexOutOfRangeException("указанные позиции массива вне границ самого массива.");
+			if (firstPosition > array.Length || secondPosition > array.Length || firstPosition < 0 || secondPosition < 0) throw new IndexOutOfRangeException("указанные позиции элементов массива вне границ самого массива.");
 
 			T temp = array[firstPosition];
 			array[firstPosition] = array[secondPosition];
