@@ -13,9 +13,9 @@ namespace crack_da_pinta_gon
 		{
 			Console.CursorVisible = false; ConsoleColor[] colors = new ConsoleColor[16];
 			for (int i = 0; i < 16; i++) { colors[i] = (ConsoleColor)i; }
-			while (true)
+			for (int i = 0; true; i++)
 			{
-				ColorFormat.Write("те%{1}кст для пр%0имера &2испол%0ьзования статич&1еских ме&0то%1дов%0&3.\n", RandomSwap(colors));
+				ColorFormat.Write($"те%{{1}}кст для пр%0имера &2испол%0ьзования статич&1еских ме&0то%1дов%0&3. %{{16}}&{{17}}output #{i}\n", RandomSwap(colors)); //ColorFormat.DefaultFore, ColorFormat.DefaultBack, 
 				//Thread.Sleep(1);
 			}
 
@@ -26,6 +26,21 @@ namespace crack_da_pinta_gon
 		{
 			for (int i = 0; i < array.Length; i++) Swap(array, i, new Random().Next(array.Length));
 			return array;
+		}
+		private static T[] RandomSwap<T>(T[] array, params T[] unchangableObjects)
+		{
+			T[] retArray = new T[array.Length + unchangableObjects.Length];
+			for (int i = 0; i < array.Length; i++) Swap(array, i, new Random().Next(array.Length));
+			return array;
+		}
+		private static T[] AllInOne<T>(params T[][] arrays)
+		{
+			int allLengths = 0;
+			for (int i = 0; i < arrays.Length; i++)
+			{
+				allLengths += arrays[i].Length;
+			}
+			//T[] array = new T[];
 		}
 		/// <summary> меняет местами элементы в указанных позициях указанного массива.  </summary>
 		/// <typeparam name="T">тип массива.</typeparam>
