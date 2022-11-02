@@ -26,14 +26,14 @@ namespace crack_da_pinta_gon
 		/// <summary>
 		/// хранилище списка 
 		/// </summary>
-		private const string the_base_path = @"\\26k-10-dc10\studocredir\uc33_9\ \tt"; // @"C:\users\1\desktop\examples.txt"
+		private const string the_base_path = @"\\26k-10-dc10\studocredir\uc33_9\ \history"; // @"C:\users\1\desktop\examples.txt"
 
 		/// <summary>
 		/// запуск программы.
 		/// </summary>
 		static void Main()
 		{
-			Console.ForegroundColor = ConsoleColor.DarkMagenta;
+			Console.ForegroundColor = ConsoleColor.DarkGray;
 
 			if (File.Exists(the_base_path)) some_folders = File.ReadAllLines(the_base_path);
 			else some_folders = new string[] { };
@@ -46,7 +46,7 @@ namespace crack_da_pinta_gon
 					if (isInputed) { File.AppendAllText(the_base_path, the_folder + "\n"); isInputed = false; }
 					if (File.Exists(the_base_path)) some_folders = File.ReadAllLines(the_base_path);
 				}
-				catch (Exception ex) { ColorFormat.Write($"%0ошибка: {ex.Message}\n", ConsoleColor.Red); }
+				catch (Exception ex) { ColorFormat.Write($"%0ошибка: {ex.Message}\n\n", ConsoleColor.Red); }
 
 				if (Retry()) { Console.Clear(); continue; }
 				else break;
@@ -78,7 +78,7 @@ namespace crack_da_pinta_gon
 			while (true)
 			{
 				Console.WriteLine("выберите одну из имеющихся папок, или введите свою.");
-				ColorFormat.Write($"-2. %0удалить историю открытых папок.\n", ConsoleColor.DarkRed);
+				//ColorFormat.Write($"-2. %0удалить историю открытых папок.\n", ConsoleColor.DarkRed);
 				ColorFormat.Write($"-1. %0ввести свою папку.\n", ConsoleColor.DarkGreen);
 				for (int i = 0; i < some_folders.Length; i++) ColorFormat.Write($"{i}. %0\"{some_folders[i]}\";\n", i % 2 == 0 ? ConsoleColor.DarkBlue : ConsoleColor.DarkRed);
 				try
@@ -98,17 +98,18 @@ namespace crack_da_pinta_gon
 						Console.Clear();
 						continue;
 					}
+					else if (choice == -26) Process.Start("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
 					else if (choice < -2 || choice >= some_folders.Length)
 					{
 						Console.Clear();
-						ColorFormat.Write("%0ошибка: введённое значение оказалось больше или меньше допущенных.\n", ConsoleColor.Red);
+						ColorFormat.Write("%0ошибка: введённое значение оказалось больше или меньше допущенных.\n\n", ConsoleColor.Red);
 						continue;
 					}
 					break;
 				}
 				catch (Exception ex)
 				{
-					ColorFormat.Write($"%0ошибка: {ex.Message}\n", ConsoleColor.Red);
+					ColorFormat.Write($"%0ошибка: {ex.Message}\n\n", ConsoleColor.Red);
 					continue;
 				}
 			}
