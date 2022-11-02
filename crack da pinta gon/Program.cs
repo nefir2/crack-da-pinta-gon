@@ -72,6 +72,10 @@ namespace crack_da_pinta_gon
 				else continue;
 			}
 		}
+		/// <summary>
+		/// метод получения пути папки из ввода в консоли.
+		/// </summary>
+		/// <returns>путь к какой-либо папке типа <see cref="string"/>.</returns>
 		private static string GetTheFolder()
 		{
 			int choice;
