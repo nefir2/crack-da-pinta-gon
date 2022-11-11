@@ -14,15 +14,6 @@ namespace crack_da_pinta_gon
 {
 	class Program
 	{
-		[DllImport("user32.dll", SetLastError = true)] //this is things from windows api.
-		[return: MarshalAs(UnmanagedType.Bool)] //https://habr.com/ru/company/otus/blog/598409/?ysclid=lacmcadxbe475507780
-		private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, int uFlags);
-
-		private const int HWND_TOPMOST = -1;
-		private const int SWP_NOMOVE = 0x0002;
-		private const int SWP_NOSIZE = 0x0001;
-
-
 		/// <summary>
 		/// поле хранящее значение типа <see cref="bool"/>, означающее:<br/>
 		/// добавлена ли новая папка с помощью ввода, или нет.
@@ -104,10 +95,7 @@ namespace crack_da_pinta_gon
 					string input = Console.ReadLine();
 					if (input.Contains("1000") && input.Contains("-") && input.Contains("7"))
 					{
-						IntPtr hWnd = Process.GetCurrentProcess().MainWindowHandle;
-						_ = SetWindowPos(hWnd, new IntPtr(HWND_TOPMOST), 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-
-
+						SetTopmost(true);
 
 						Console.Clear();
 						Process.Start("https://www.youtube.com/watch?v=f3inPekeRYI");
@@ -117,7 +105,7 @@ namespace crack_da_pinta_gon
 						zxc.zxcqwe();
 						Console.Title = stdTitle;
 						Console.ForegroundColor = ColorFormat.DefaultFore;
-						_ = SetWindowPos(hWnd, new IntPtr(0), 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+						SetTopmost(false);
 						continue;
 					}
 					choice = int.Parse(input);
@@ -140,6 +128,7 @@ namespace crack_da_pinta_gon
 						Console.Clear();
 						continue;
 					}
+					else if (choice == -3) ShowMessageBox("гений", "решил мне тут потыкать программу, да? тогда лови кучу ошибок в консоль, если конечно увидишь как она их выводит.");
 					else if (choice < -2 || choice >= some_folders.Length)
 					{
 						Console.Clear();
@@ -154,7 +143,42 @@ namespace crack_da_pinta_gon
 					continue;
 				}
 			}
+			if (choice == -3) throw new Exception("было вызвано исключение пользователем. экстренное закрытие консоли.\nи вот ты на полном серьёзе читаешь это?"); //
 			return some_folders[choice];
 		}
+
+		#region WINDOWS API
+		[DllImport("user32.dll", SetLastError = true)] //this is things from windows api.
+		[return: MarshalAs(UnmanagedType.Bool)] //https://habr.com/ru/company/otus/blog/598409/?ysclid=lacmcadxbe475507780
+		private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, int uFlags);
+		[DllImport("user32.dll")] private static extern int MessageBox(IntPtr hwnd, String text, String caption, int options);
+		private const int HWND_TOPMOST_ON = -1;
+		private const int HWND_TOPMOST_OFF = -2; //добавлено собственноручно, методом тыка.
+		private const int SWP_NOMOVE = 0x0002;
+		private const int SWP_NOSIZE = 0x0001;
+
+		/// <summary>
+		/// установка консоли поверх всех окон.
+		/// </summary>
+		/// <param name="topmost">
+		/// если значение <see langword="true"/>, консоль поверх всех окон, <br/>
+		/// иначе если <see langword="false"/> - не поверх всех окон.
+		/// </param>
+		private static void SetTopmost(bool topmost)
+		{
+			IntPtr hWnd = Process.GetCurrentProcess().MainWindowHandle;
+
+			_ = SetWindowPos(
+				hWnd, 
+				new IntPtr(topmost ? HWND_TOPMOST_ON : HWND_TOPMOST_OFF), 
+				0, 0, 0, 0, 
+				SWP_NOMOVE | SWP_NOSIZE
+			);
+		}
+		private static void ShowMessageBox(string caption, string message)
+		{
+			MessageBox(IntPtr.Zero, message, caption, 0); //"здарова братан" //"чо как жизнь твоя?"
+		}
+		#endregion
 	}
 }
