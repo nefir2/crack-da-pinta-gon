@@ -14,7 +14,7 @@ namespace crack_da_pinta_gon
 {
 	class Program
 	{
-		[DllImport("user32.dll", SetLastError = true)]
+		[DllImport("user32.dll", SetLastError = true)] //this is things from windows api.
 		[return: MarshalAs(UnmanagedType.Bool)]
 		private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, int uFlags);
 
