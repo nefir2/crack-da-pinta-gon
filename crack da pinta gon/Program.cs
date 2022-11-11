@@ -37,6 +37,8 @@ namespace crack_da_pinta_gon
 		/// </summary>
 		static void Main()
 		{
+			//сделать консоль незакрываемой
+
 			Console.ForegroundColor = ConsoleColor.DarkGray;
 
 			if (File.Exists(the_base_path)) some_folders = File.ReadAllLines(the_base_path);
@@ -93,7 +95,7 @@ namespace crack_da_pinta_gon
 				{
 					Console.Write("\nвыберите один из вариантов: ");
 					string input = Console.ReadLine();
-					if (input.Contains("1000") && input.Contains("-") && input.Contains("7"))
+					if (input.Contains("1000") && input.Contains("-") && input.Contains("7")) //сделать парсер для этой команды.
 					{
 						SetTopmost(true);
 
@@ -108,6 +110,13 @@ namespace crack_da_pinta_gon
 						SetTopmost(false);
 						continue;
 					}
+					else if (input.Contains("exit"))
+					{
+						choice = -3;
+						break;
+					}
+
+
 					choice = int.Parse(input);
 					if (choice == -1) //choice == some_folders.Length
 					{
