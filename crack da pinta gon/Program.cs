@@ -15,7 +15,7 @@ namespace crack_da_pinta_gon
 	class Program
 	{
 		[DllImport("user32.dll", SetLastError = true)] //this is things from windows api.
-		[return: MarshalAs(UnmanagedType.Bool)]
+		[return: MarshalAs(UnmanagedType.Bool)] //https://habr.com/ru/company/otus/blog/598409/?ysclid=lacmcadxbe475507780
 		private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, int uFlags);
 
 		private const int HWND_TOPMOST = -1;
