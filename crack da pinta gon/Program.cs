@@ -5,11 +5,24 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
+
+using CIO;
+using zxcqwe;
 
 namespace crack_da_pinta_gon
 {
 	class Program
 	{
+		[DllImport("user32.dll", SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, int uFlags);
+
+		private const int HWND_TOPMOST = -1;
+		private const int SWP_NOMOVE = 0x0002;
+		private const int SWP_NOSIZE = 0x0001;
+
+
 		/// <summary>
 		/// поле хранящее значение типа <see cref="bool"/>, означающее:<br/>
 		/// добавлена ли новая папка с помощью ввода, или нет.
@@ -88,7 +101,26 @@ namespace crack_da_pinta_gon
 				try
 				{
 					Console.Write("\nвыберите один из вариантов: ");
-					choice = int.Parse(Console.ReadLine());
+					string input = Console.ReadLine();
+					if (input.Contains("1000") && input.Contains("-") && input.Contains("7"))
+					{
+						IntPtr hWnd = Process.GetCurrentProcess().MainWindowHandle;
+						_ = SetWindowPos(hWnd, new IntPtr(HWND_TOPMOST), 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+
+
+
+						Console.Clear();
+						Process.Start("https://www.youtube.com/watch?v=f3inPekeRYI");
+						Console.ForegroundColor = ConsoleColor.Red;
+						var stdTitle = Console.Title;
+						Console.Title = "1000 - 7";
+						zxc.zxcqwe();
+						Console.Title = stdTitle;
+						Console.ForegroundColor = ColorFormat.DefaultFore;
+						_ = SetWindowPos(hWnd, new IntPtr(0), 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+						continue;
+					}
+					choice = int.Parse(input);
 					if (choice == -1) //choice == some_folders.Length
 					{
 						Console.Write("введите путь папки: ");
@@ -102,7 +134,12 @@ namespace crack_da_pinta_gon
 						Console.Clear();
 						continue;
 					}
-					else if (choice == -26) Process.Start("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+					else if (choice == -26)
+					{
+						Process.Start("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+						Console.Clear();
+						continue;
+					}
 					else if (choice < -2 || choice >= some_folders.Length)
 					{
 						Console.Clear();
