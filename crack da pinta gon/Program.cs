@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
+using System.Windows;
 
 using CIO;
 using zxcqwe;
@@ -119,8 +120,12 @@ namespace crack_da_pinta_gon
 					else if (input.Contains("virus"))
 					{
 						Hider(true);
-						Thread.Sleep(3000);
-						Hider(false);
+						while (true)
+						{
+							Thread.Sleep(3000);
+							Process.Start("https://www.youtube.com/watch?v=QJJYpsA5tv8");
+						}
+						//Hider(false);
 					}
 
 
