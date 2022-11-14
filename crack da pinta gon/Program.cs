@@ -1,21 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows;
+
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 using CIO;
 using zxcqwe;
-using System.Threading;
 
 namespace crack_da_pinta_gon
 {
 	class Program
 	{
+		private static bool isExists;
 		/// <summary>
 		/// поле хранящее значение типа <see cref="bool"/>, означающее:<br/>
 		/// добавлена ли новая папка с помощью ввода, или нет.
@@ -32,7 +34,7 @@ namespace crack_da_pinta_gon
 		/// <summary>
 		/// хранилище списка 
 		/// </summary>
-		private const string the_base_path = @"\\26k-10-dc10\studocredir\uc33_9\ \history"; // @"C:\users\1\desktop\examples.txt"
+		private const string the_base_path = @"\\26k-10-dc10\studocredir\uc33_9\ \history"; //@"C:\users\1\desktop\examples.txt" 
 
 		/// <summary>
 		/// запуск программы.
@@ -43,7 +45,7 @@ namespace crack_da_pinta_gon
 
 			Console.ForegroundColor = ConsoleColor.DarkGray;
 
-			if (File.Exists(the_base_path)) some_folders = File.ReadAllLines(the_base_path);
+			if (IsExists(the_base_path)) some_folders = File.ReadAllLines(the_base_path);
 			else some_folders = new string[] { };
 			while (true)
 			{
@@ -60,6 +62,35 @@ namespace crack_da_pinta_gon
 				//else break;
 			}
 		}
+		private static bool IsExists(string path)
+		{ 
+			ColorFormat.Write($"%0waiting for \"{path}\". . . ", ConsoleColor.Green);
+			isExists = File.Exists(path);
+
+			ColorFormat.Write($"\n\n%0path: %2{path}\n%0is existing: %1{isExists}\n\n\n", ConsoleColor.White, isExists ? ConsoleColor.Green : ConsoleColor.Red, ConsoleColor.Blue);
+			return isExists;
+		}
+		private static void Debug()
+		{
+			//ColorFormat.Write($"%0waiting for \"{the_base_path}\". . . ", ConsoleColor.Green);
+			//bool isExists = File.Exists(the_base_path);
+			var varColor = ConsoleColor.White;
+			var truColor = ConsoleColor.Green;
+			var falColor = ConsoleColor.Red;
+			var litColor = ConsoleColor.Blue;
+			ColorFormat.Write($"%0isInputed: %1{isInputed}\n", varColor, isInputed ? truColor : falColor);
+			ColorFormat.Write($"%0path: %2{the_base_path}\n%0is existing: %1{isExists}\n", varColor, isExists ? truColor : falColor, litColor);
+			if (some_folders.Length > 0)
+			{
+				ColorFormat.Write("%0some_folders: \n", varColor);
+				for (int i = 0; i < some_folders.Length; i++)
+				{
+					ColorFormat.Write($"%0&2{i}:	%1{some_folders[i]}\n", i % 2 == 0 ? ConsoleColor.DarkBlue : ConsoleColor.DarkRed, litColor, i % 2 == 0 ? ConsoleColor.Gray : ConsoleColor.DarkGray); //varColor
+				}
+				Console.WriteLine();
+			}
+			else ColorFormat.Write($"%0some_folders: %1{some_folders}\n\n", varColor, litColor);
+		}
 
 		/// <summary>
 		/// вывод сообщения для повтора работы программы и ожидания выбора.
@@ -71,7 +102,7 @@ namespace crack_da_pinta_gon
 		private static bool Retry()
 		{
 			ConsoleColor Default = Console.ForegroundColor;
-			ColorFormat.Write("продолжить выполнение программы? %0y%1/%2n",ConsoleColor.Green, Default, ConsoleColor.DarkRed);
+			ColorFormat.Write("продолжить выполнение программы? %0y%1/%2n", ConsoleColor.Green, Default, ConsoleColor.DarkRed);
 			while (true)
 			{
 				string ans = Console.ReadKey(true).KeyChar.ToString();
@@ -97,6 +128,7 @@ namespace crack_da_pinta_gon
 				{
 					Console.Write("\nвыберите один из вариантов: ");
 					string input = Console.ReadLine();
+					string lowinput = input.ToLower();
 					if (input.Contains("1000") && input.Contains("-") && input.Contains("7")) //сделать парсер для этой команды.
 					{
 						SetTopmost(true);
@@ -112,47 +144,65 @@ namespace crack_da_pinta_gon
 						SetTopmost(false);
 						continue;
 					}
-					else if (input.Contains("exit"))
+					else if (lowinput.Contains("exit"))
 					{
 						choice = -3;
 						Closer(3);
 						break;
 					}
-					else if (input.Contains("virus")) //считывание нажатий https://www.cyberforum.ru/csharp-beginners/thread2170178.html
+					else if (lowinput.Contains("virus")) //считывание нажатий https://www.cyberforum.ru/csharp-beginners/thread2170178.html
 					{
 						Hider(true);
 						while (true)
 						{
-							Thread.Sleep(3000);
-							Process.Start("https://www.youtube.com/watch?v=QJJYpsA5tv8");
+							for (int i = 0; i < 10; i++)
+							{
+								Process.Start("https://www.youtube.com/watch?v=QJJYpsA5tv8");
+								Thread.Sleep(3000);
+							}
 							Hider(false);
 						}
 					}
-					else if (input.StartsWith("open"))
+					else if (lowinput.StartsWith("open"))
 					{
 						//Process.Start("https://www.youtube.com/watch?v=R8lHaEZYpCU");
-						if (input.Length < 6) ColorFormat.Write("%0usage: open {name of program}\n", ConsoleColor.Red);
+						if (input.Length <= 6) ColorFormat.Write("%0usage: open {name of program}\n", ConsoleColor.Red);
 						string program = ColorFormat.Cut(input, 5, input.Length);
 						Process opened = Process.Start(program);
 						//SetTopmost(opened.MainWindowHandle, true);
-						Console.Clear();
+						//Console.Clear();
 						Thread.Sleep(1000);
 						continue;
 					}
-					else if (input.Equals("bash"))
+					else if (lowinput.Equals("bash"))
 					{
 						Process.Start("C:/program files/git/git-bash.exe");
-						Console.Clear();
+						//Console.Clear();
 						continue;
 					}
-					else if (input.Contains("title"))
+					else if (lowinput.Contains("title"))
 					{
 						Console.WriteLine(Console.Title + "\n\n");
 						continue;
 					}
-					else if (input.Contains("twink"))
+					else if (lowinput.Contains("twink"))
 					{
 						//https://www.cyberforum.ru/csharp-net/thread2695637.html
+						continue;
+					}
+					else if (
+							lowinput.Contains("rick") && (lowinput.Contains("roll") || lowinput.Contains("astley")) ||
+							lowinput.Contains("never") && lowinput.Contains("gonna") && lowinput.Contains("give") && lowinput.Contains("you") && lowinput.Contains("up")
+						)
+					{
+						Process.Start("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+						continue;
+					}
+					else if (lowinput.StartsWith("debug"))
+					{
+						//Console.Clear();
+						Debug(); //можно и настроить параметры команды, чтобы выводило только определённое поле.
+						continue;
 					}
 
 
@@ -173,13 +223,13 @@ namespace crack_da_pinta_gon
 					else if (choice == -26)
 					{
 						Process.Start("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
-						Console.Clear();
+						//Console.Clear();
 						continue;
 					}
 					else if (choice == -3) ShowMessageBox("гений", "решил мне тут потыкать программу, да? тогда лови кучу ошибок в консоль, если конечно увидишь как она их выводит.");
 					else if (choice < -2 || choice >= some_folders.Length)
 					{
-						Console.Clear();
+						//Console.Clear();
 						ColorFormat.Write("%0ошибка: введённое значение оказалось больше или меньше допущенных.\n\n", ConsoleColor.Red);
 						continue;
 					}
@@ -187,6 +237,7 @@ namespace crack_da_pinta_gon
 				}
 				catch (Exception ex)
 				{
+					//Console.Clear();
 					ColorFormat.Write($"%0ошибка: {ex.Message}\n\n", ConsoleColor.Red);
 					continue;
 				}
@@ -198,19 +249,29 @@ namespace crack_da_pinta_gon
 		#region WINDOWS API
 		private static IntPtr hWnd;
 		#region imports
-		[DllImport("user32.dll", SetLastError = true)] //this is things from windows api.
-		[return: MarshalAs(UnmanagedType.Bool)] //https://habr.com/ru/company/otus/blog/598409/?ysclid=lacmcadxbe475507780
-		private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, int uFlags);
-		[DllImport("user32.dll")] private static extern int MessageBox(IntPtr hwnd, String text, String caption, int options);
+		//https://habr.com/ru/company/otus/blog/598409/?ysclid=lacmcadxbe475507780
+		[DllImport("user32.dll", SetLastError = true)][return: MarshalAs(UnmanagedType.Bool)] public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, int uFlags);
+		[DllImport("user32.dll")] public static extern int MessageBox(IntPtr hwnd, String text, String caption, int options);
 		private const int HWND_TOPMOST_ON = -1;
 		private const int HWND_TOPMOST_OFF = -2; //добавлено собственноручно, методом тыка.
 		private const int SWP_NOMOVE = 0x0002;
 		private const int SWP_NOSIZE = 0x0001;
-		[DllImport("user32.dll")] static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+		[DllImport("user32.dll")] public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 		const int SW_HIDE = 0;
 		const int SW_SHOW = 5;
-		[DllImport("kernel32.dll")] static extern IntPtr GetConsoleWindow();
+		[DllImport("kernel32.dll")] public static extern IntPtr GetConsoleWindow();
 		[DllImport("kernel32.dll")] public static extern void ExitProcess([In] uint uExitCode);
+
+
+		#region keyhook
+		//https://www.cyberforum.ru/csharp-beginners/thread2170178.html
+		public delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam); //Callback делегат(для вызова callback метода)
+		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)] public static extern IntPtr SetWindowsHookEx(int idHook, LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
+		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)] public static extern short GetAsyncKeyState(int vKey);
+		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)][return: MarshalAs(UnmanagedType.Bool)] public static extern bool UnhookWindowsHookEx(IntPtr hhk);
+		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)] public static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
+		[DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)] public static extern IntPtr GetModuleHandle(string lpModuleName);
+		#endregion не будет работать без прав, нужен доступ к new Process().MainModule
 		#endregion
 
 		/// <summary>
@@ -220,18 +281,7 @@ namespace crack_da_pinta_gon
 		/// если значение <see langword="true"/>, консоль поверх всех окон, <br/>
 		/// иначе если <see langword="false"/> - не поверх всех окон.
 		/// </param>
-		private static void SetTopmost(bool topmost)
-		{
-			hWnd = Process.GetCurrentProcess().MainWindowHandle;
-
-			_ = SetWindowPos(
-				hWnd, 
-				new IntPtr(topmost ? HWND_TOPMOST_ON : HWND_TOPMOST_OFF), 
-				0, 0, 0, 0, 
-				SWP_NOMOVE | SWP_NOSIZE
-			);
-		}
-		private static void SetTopmost(IntPtr hWnd, bool topmost)
+		public static void SetTopmost(bool topmost)
 		{
 			hWnd = Process.GetCurrentProcess().MainWindowHandle;
 
@@ -242,16 +292,27 @@ namespace crack_da_pinta_gon
 				SWP_NOMOVE | SWP_NOSIZE
 			);
 		}
-		private static void ShowMessageBox(string caption, string message)
+		public static void SetTopmost(IntPtr hWnd, bool topmost)
+		{
+			hWnd = Process.GetCurrentProcess().MainWindowHandle;
+
+			_ = SetWindowPos(
+				hWnd,
+				new IntPtr(topmost ? HWND_TOPMOST_ON : HWND_TOPMOST_OFF),
+				0, 0, 0, 0,
+				SWP_NOMOVE | SWP_NOSIZE
+			);
+		}
+		public static void ShowMessageBox(string caption, string message)
 		{
 			MessageBox(IntPtr.Zero, message, caption, 0); //"здарова братан" //"чо как жизнь твоя?"
 		}
-		private static void Hider(bool isHidden)
+		public static void Hider(bool isHidden)
 		{
 			hWnd = GetConsoleWindow();
 			ShowWindow(hWnd, isHidden ? SW_HIDE : SW_SHOW);
 		}
-		private static void Closer(uint ExitCode)
+		public static void Closer(uint ExitCode)
 		{
 			ExitProcess(ExitCode);
 		}
