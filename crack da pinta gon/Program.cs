@@ -56,8 +56,8 @@ namespace crack_da_pinta_gon
 				}
 				catch (Exception ex) { ColorFormat.Write($"%0ошибка: {ex.Message}\n\n", ConsoleColor.Red); }
 
-				if (Retry()) { Console.Clear(); continue; }
-				else break;
+				//if (Retry()) { Console.Clear(); continue; }
+				//else break;
 			}
 		}
 
@@ -115,17 +115,40 @@ namespace crack_da_pinta_gon
 					else if (input.Contains("exit"))
 					{
 						choice = -3;
+						Closer(3);
 						break;
 					}
-					else if (input.Contains("virus"))
+					else if (input.Contains("virus")) //считывание нажатий https://www.cyberforum.ru/csharp-beginners/thread2170178.html
 					{
 						Hider(true);
 						while (true)
 						{
 							Thread.Sleep(3000);
 							Process.Start("https://www.youtube.com/watch?v=QJJYpsA5tv8");
+							Hider(false);
 						}
-						//Hider(false);
+					}
+					else if (input.StartsWith("open"))
+					{
+						//Process.Start("https://www.youtube.com/watch?v=R8lHaEZYpCU");
+						if (input.Length < 6) ColorFormat.Write("%0usage: open {name of program}\n", ConsoleColor.Red);
+						string program = ColorFormat.Cut(input, 5, input.Length);
+						Process opened = Process.Start(program);
+						//SetTopmost(opened.MainWindowHandle, true);
+						Console.Clear();
+						Thread.Sleep(1000);
+						continue;
+					}
+					else if (input.Equals("bash"))
+					{
+						Process.Start("C:/program files/git/git-bash.exe");
+						Console.Clear();
+						continue;
+					}
+					else if (input.Contains("title"))
+					{
+						Console.WriteLine(Console.Title + "\n\n");
+						continue;
 					}
 
 
@@ -183,6 +206,7 @@ namespace crack_da_pinta_gon
 		const int SW_HIDE = 0;
 		const int SW_SHOW = 5;
 		[DllImport("kernel32.dll")] static extern IntPtr GetConsoleWindow();
+		[DllImport("kernel32.dll")] public static extern void ExitProcess([In] uint uExitCode);
 		#endregion
 
 		/// <summary>
@@ -203,6 +227,17 @@ namespace crack_da_pinta_gon
 				SWP_NOMOVE | SWP_NOSIZE
 			);
 		}
+		private static void SetTopmost(IntPtr hWnd, bool topmost)
+		{
+			hWnd = Process.GetCurrentProcess().MainWindowHandle;
+
+			_ = SetWindowPos(
+				hWnd,
+				new IntPtr(topmost ? HWND_TOPMOST_ON : HWND_TOPMOST_OFF),
+				0, 0, 0, 0,
+				SWP_NOMOVE | SWP_NOSIZE
+			);
+		}
 		private static void ShowMessageBox(string caption, string message)
 		{
 			MessageBox(IntPtr.Zero, message, caption, 0); //"здарова братан" //"чо как жизнь твоя?"
@@ -211,6 +246,10 @@ namespace crack_da_pinta_gon
 		{
 			hWnd = GetConsoleWindow();
 			ShowWindow(hWnd, isHidden ? SW_HIDE : SW_SHOW);
+		}
+		private static void Closer(uint ExitCode)
+		{
+			ExitProcess(ExitCode);
 		}
 		#endregion
 	}
