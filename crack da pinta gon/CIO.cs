@@ -6,7 +6,7 @@ namespace CIO
 	public static class ConsIO
 	{
 		private static readonly string всеКлавишы = "`1234567890-=	qwertyuiop[]asdfghjkl;'\\zxcvbnm,./~!@#$%^&*()_+QWERTYUIOP{}ASDFGHJKL:\"|ZXCVBNM<>?  ";
-		//I
+		#region Input
 		/// <summary> ввод целочисленного числа с очисткой консоли при завершении. </summary>
 		/// <param name="messageForInput">сообщение для ввода числа.<br/><br/>пример: <c>"введите число: "</c>.</param>
 		/// <param name="errorMessageEmpty">сообщение об ошибке при отправке пустой строки.<br/><br/>пример: <c>"нельзя вводить ничего."</c>.</param>
@@ -1640,7 +1640,8 @@ namespace CIO
 		/// <summary> ожидает любое нажатие клавишы. </summary>
 		/// <remarks> при окончании программы консоль автоматически закрывается,<br/>чтобы это остановить, ожидается ввод чего-либо.<br/>не выводит никаких сообщений и ждёт нажатие клавиш. </remarks>
 		public static void Endl() => Console.ReadKey(true);
-		//O
+		#endregion
+		#region O
 		/// <summary> очищает консоль и выводит сообщение, после чего переносит курсор. </summary>
 		/// <param name="message"> сообщение для вывода.<br/><br/>параметр принимает любой тип,<br/>сделано для того чтобы не расписывать<br/>каждую перегрузку одного и того же метода. </param>
 		public static void ShowClrLn(object message)
@@ -1683,5 +1684,6 @@ namespace CIO
 		public static void Ln() => Console.WriteLine();
 		/// <summary> очистка консоли. </summary>
 		public static void Clr() => Console.Clear();
+		#endregion
 	}
 }

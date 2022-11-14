@@ -1,6 +1,9 @@
 ﻿using System;
 namespace crack_da_pinta_gon
 {
+	/// <summary>
+	/// форматирование цвета в консоли.
+	/// </summary>
 	public static class ColorFormat
 	{
 		#region default color

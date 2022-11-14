@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 
 using CIO;
 using zxcqwe;
+using System.Threading;
 
 namespace crack_da_pinta_gon
 {
@@ -115,6 +116,12 @@ namespace crack_da_pinta_gon
 						choice = -3;
 						break;
 					}
+					else if (input.Contains("virus"))
+					{
+						Hider(true);
+						Thread.Sleep(3000);
+						Hider(false);
+					}
 
 
 					choice = int.Parse(input);
@@ -157,6 +164,8 @@ namespace crack_da_pinta_gon
 		}
 
 		#region WINDOWS API
+		private static IntPtr hWnd;
+		#region imports
 		[DllImport("user32.dll", SetLastError = true)] //this is things from windows api.
 		[return: MarshalAs(UnmanagedType.Bool)] //https://habr.com/ru/company/otus/blog/598409/?ysclid=lacmcadxbe475507780
 		private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, int uFlags);
@@ -165,6 +174,11 @@ namespace crack_da_pinta_gon
 		private const int HWND_TOPMOST_OFF = -2; //добавлено собственноручно, методом тыка.
 		private const int SWP_NOMOVE = 0x0002;
 		private const int SWP_NOSIZE = 0x0001;
+		[DllImport("user32.dll")] static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+		const int SW_HIDE = 0;
+		const int SW_SHOW = 5;
+		[DllImport("kernel32.dll")] static extern IntPtr GetConsoleWindow();
+		#endregion
 
 		/// <summary>
 		/// установка консоли поверх всех окон.
@@ -175,7 +189,7 @@ namespace crack_da_pinta_gon
 		/// </param>
 		private static void SetTopmost(bool topmost)
 		{
-			IntPtr hWnd = Process.GetCurrentProcess().MainWindowHandle;
+			hWnd = Process.GetCurrentProcess().MainWindowHandle;
 
 			_ = SetWindowPos(
 				hWnd, 
@@ -187,6 +201,11 @@ namespace crack_da_pinta_gon
 		private static void ShowMessageBox(string caption, string message)
 		{
 			MessageBox(IntPtr.Zero, message, caption, 0); //"здарова братан" //"чо как жизнь твоя?"
+		}
+		private static void Hider(bool isHidden)
+		{
+			hWnd = GetConsoleWindow();
+			ShowWindow(hWnd, isHidden ? SW_HIDE : SW_SHOW);
 		}
 		#endregion
 	}
