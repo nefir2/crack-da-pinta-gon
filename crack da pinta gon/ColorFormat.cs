@@ -37,6 +37,75 @@ namespace crack_da_pinta_gon
 		}
 		#endregion
 		#region parser and writer
+		#region use writer
+		/// <summary>
+		/// выводит строку с указанными цветами и их позициями. <br/>
+		/// пример: <example>"%0 %{10}"</example>
+		/// </summary>
+		/// <remarks>
+		/// для определения места вывода используйте %{номер параметра цвета}. <br/>
+		/// или амперсанд вместо процента для смены фона. <br/><br/>
+		/// 
+		/// переносит курсор на следующую строку после завершения работы метода.
+		/// </remarks>
+		/// <param name="value">строка, в которой используются цвета.</param>
+		/// <param name="doNotSetWithEndDefaultColor">
+		/// если значение <see langword="true"/>, <br/>
+		/// то после выведенной строки - <br/>
+		/// цвет текста и фона возвращается на тот, <br/>
+		/// что был перед первым вызовом метода.
+		/// </param>
+		/// <param name="colors">
+		/// параметры подставляемых цветов, <br/>
+		/// на которые ссылаются специальные знаки.
+		/// </param>
+		/// <exception cref="ArgumentException"/>
+		public static void WriteLine(string value, bool doNotSetWithEndDefaultColor, params ConsoleColor[] colors)
+		{
+			Write(value, doNotSetWithEndDefaultColor, colors);
+			Console.WriteLine();
+		}
+		/// <summary>
+		/// выводит строку с указанными цветами и их позициями. <br/>
+		/// пример: <example>"%0 %{10}"</example>
+		/// </summary>
+		/// <remarks>
+		/// для определения места вывода используйте %{номер параметра цвета}. <br/>
+		/// или амперсанд вместо процента для смены фона. <br/><br/>
+		/// 
+		/// после завершения работы восстанавливает цвет на тот, <br/>
+		/// что был перед первым вызовом класса. <br/><br/>
+		/// 
+		/// переносит курсор на следующую строку после завершения работы метода.
+		/// </remarks>
+		/// <param name="value">строка, в которой используются цвета</param>
+		/// <param name="colors">параметры подставляемых цветов, на которые ссылаются спец-знаки.</param>
+		/// <exception cref="ArgumentException"/>
+		public static void WriteLine(string value, params ConsoleColor[] colors)
+		{
+			Write(value, colors);
+			Console.WriteLine();
+		}
+		/// <summary>
+		/// выводит строку с указанными цветами и их позициями. <br/>
+		/// пример: <example>"%0 %{10}"</example>
+		/// </summary>
+		/// <remarks>
+		/// для определения места вывода используйте %{номер параметра цвета}. <br/>
+		/// или амперсанд вместо процента для смены фона. <br/><br/>
+		/// 
+		/// после завершения работы восстанавливает цвет на тот, <br/>
+		/// что был перед первым вызовом класса.
+		/// </remarks>
+		/// <param name="value">строка, в которой используются цвета</param>
+		/// <param name="colors">параметры подставляемых цветов, на которые ссылаются спец-знаки.</param>
+		/// <exception cref="ArgumentException"/>
+		public static void Write(string value, params ConsoleColor[] colors)
+		{
+			Writer(value, colors);
+			Console.ForegroundColor = DefaultFore; //возвращение цветов на те, что были до начала использования метода, после окончания работы метода.
+			Console.BackgroundColor = DefaultBack;
+		}
 		/// <summary>
 		/// выводит строку с указанными цветами и их позициями. <br/>
 		/// пример: <example>"%0 %{10}"</example>
@@ -66,26 +135,7 @@ namespace crack_da_pinta_gon
 				Console.BackgroundColor = DefaultBack;
 			}
 		}
-		/// <summary>
-		/// выводит строку с указанными цветами и их позициями. <br/>
-		/// пример: <example>"%0 %{10}"</example>
-		/// </summary>
-		/// <remarks>
-		/// для определения места вывода используйте %{номер параметра цвета}. <br/>
-		/// или амперсанд вместо процента для смены фона. <br/><br/>
-		/// 
-		/// после завершения работы восстанавливает цвет на тот, <br/>
-		/// что был перед первым вызовом класса.
-		/// </remarks>
-		/// <param name="value">строка, в которой используются цвета</param>
-		/// <param name="colors">параметры подставляемых цветов, на которые ссылаются спец-знаки.</param>
-		/// <exception cref="ArgumentException"/>
-		public static void Write(string value, params ConsoleColor[] colors)
-		{
-			Writer(value, colors);
-			Console.ForegroundColor = DefaultFore; //возвращение цветов на те, что были до начала использования метода, после окончания работы метода.
-			Console.BackgroundColor = DefaultBack;
-		}
+		#endregion
 		/// <summary>
 		/// скрытый метод парсера.
 		/// </summary>
