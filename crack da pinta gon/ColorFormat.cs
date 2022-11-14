@@ -46,6 +46,27 @@ namespace crack_da_pinta_gon
 		/// для определения места вывода используйте %{номер параметра цвета}. <br/>
 		/// или амперсанд вместо процента для смены фона. <br/><br/>
 		/// 
+		/// после завершения работы восстанавливает цвет на тот, <br/>
+		/// что был перед первым вызовом класса. <br/><br/>
+		/// 
+		/// переносит курсор на следующую строку после завершения работы метода.
+		/// </remarks>
+		/// <param name="value">строка, в которой используются цвета</param>
+		/// <param name="colors">параметры подставляемых цветов, на которые ссылаются спец-знаки.</param>
+		/// <exception cref="ArgumentException"/>
+		public static void WriteLine(string value, params ConsoleColor[] colors)
+		{
+			Write(value, colors);
+			Console.WriteLine();
+		}
+		/// <summary>
+		/// выводит строку с указанными цветами и их позициями. <br/>
+		/// пример: <example>"%0 %{10}"</example>
+		/// </summary>
+		/// <remarks>
+		/// для определения места вывода используйте %{номер параметра цвета}. <br/>
+		/// или амперсанд вместо процента для смены фона. <br/><br/>
+		/// 
 		/// переносит курсор на следующую строку после завершения работы метода.
 		/// </remarks>
 		/// <param name="value">строка, в которой используются цвета.</param>
@@ -63,27 +84,6 @@ namespace crack_da_pinta_gon
 		public static void WriteLine(string value, bool doNotSetWithEndDefaultColor, params ConsoleColor[] colors)
 		{
 			Write(value, doNotSetWithEndDefaultColor, colors);
-			Console.WriteLine();
-		}
-		/// <summary>
-		/// выводит строку с указанными цветами и их позициями. <br/>
-		/// пример: <example>"%0 %{10}"</example>
-		/// </summary>
-		/// <remarks>
-		/// для определения места вывода используйте %{номер параметра цвета}. <br/>
-		/// или амперсанд вместо процента для смены фона. <br/><br/>
-		/// 
-		/// после завершения работы восстанавливает цвет на тот, <br/>
-		/// что был перед первым вызовом класса. <br/><br/>
-		/// 
-		/// переносит курсор на следующую строку после завершения работы метода.
-		/// </remarks>
-		/// <param name="value">строка, в которой используются цвета</param>
-		/// <param name="colors">параметры подставляемых цветов, на которые ссылаются спец-знаки.</param>
-		/// <exception cref="ArgumentException"/>
-		public static void WriteLine(string value, params ConsoleColor[] colors)
-		{
-			Write(value, colors);
 			Console.WriteLine();
 		}
 		/// <summary>

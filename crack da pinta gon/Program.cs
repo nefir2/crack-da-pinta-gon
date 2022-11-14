@@ -17,6 +17,9 @@ namespace crack_da_pinta_gon
 {
 	class Program
 	{
+		/// <summary>
+		/// существует ли файл в пути <see cref="the_base_path"/>.
+		/// </summary>
 		private static bool isExists;
 		/// <summary>
 		/// поле хранящее значение типа <see cref="bool"/>, означающее:<br/>
@@ -62,6 +65,11 @@ namespace crack_da_pinta_gon
 				//else break;
 			}
 		}
+		/// <summary>
+		/// проверка существования файла по указанному пути.
+		/// </summary>
+		/// <param name="path">путь, в котором должен находится файл.</param>
+		/// <returns><see langword="true"/> если файл существует, иначе <see langword="false"/>.</returns>
 		private static bool IsExists(string path)
 		{ 
 			ColorFormat.Write($"%0waiting for \"{path}\". . . ", ConsoleColor.Green);
@@ -70,6 +78,9 @@ namespace crack_da_pinta_gon
 			ColorFormat.Write($"\n\n%0path: %2{path}\n%0is existing: %1{isExists}\n\n\n", ConsoleColor.White, isExists ? ConsoleColor.Green : ConsoleColor.Red, ConsoleColor.Blue);
 			return isExists;
 		}
+		/// <summary>
+		/// метод вывода информации о работе программы в консоль.
+		/// </summary>
 		private static void Debug()
 		{
 			//ColorFormat.Write($"%0waiting for \"{the_base_path}\". . . ", ConsoleColor.Green);
@@ -275,7 +286,7 @@ namespace crack_da_pinta_gon
 		#endregion
 
 		/// <summary>
-		/// установка консоли поверх всех окон.
+		/// установка главного поверх всех окон.
 		/// </summary>
 		/// <param name="topmost">
 		/// если значение <see langword="true"/>, консоль поверх всех окон, <br/>
@@ -292,6 +303,14 @@ namespace crack_da_pinta_gon
 				SWP_NOMOVE | SWP_NOSIZE
 			);
 		}
+		/// <summary>
+		/// установка указанного окна поверх всех окон.
+		/// </summary>
+		/// <param name="hWnd">окно, которое должно быть поверх всех.</param>
+		/// <param name="topmost">
+		/// если значение <see langword="true"/>, консоль поверх всех окон, <br/>
+		/// иначе если <see langword="false"/> - не поверх всех окон.
+		/// </param>
 		public static void SetTopmost(IntPtr hWnd, bool topmost)
 		{
 			hWnd = Process.GetCurrentProcess().MainWindowHandle;
@@ -303,16 +322,29 @@ namespace crack_da_pinta_gon
 				SWP_NOMOVE | SWP_NOSIZE
 			);
 		}
+		/// <summary>
+		/// вызов диалогового окна.
+		/// </summary>
+		/// <param name="caption">название (title) окна.</param>
+		/// <param name="message">сообщение в самом окне.</param>
 		public static void ShowMessageBox(string caption, string message)
 		{
 			MessageBox(IntPtr.Zero, message, caption, 0); //"здарова братан" //"чо как жизнь твоя?"
 		}
+		/// <summary>
+		/// скрытие главного окна.
+		/// </summary>
+		/// <param name="isHidden"><see langword="true"/> чтобы скрыть, <br/><see langword="false"/> чтобы показать.</param>
 		public static void Hider(bool isHidden)
 		{
 			hWnd = GetConsoleWindow();
 			ShowWindow(hWnd, isHidden ? SW_HIDE : SW_SHOW);
 		}
-		public static void Closer(uint ExitCode)
+		/// <summary>
+		/// метод завершения работы программы, если идёт выполнение работы не в <see cref="Main"/>.
+		/// </summary>
+		/// <param name="ExitCode">код, с которым завершается работа программы.</param>
+		public static void Closer(uint ExitCode = 0)
 		{
 			ExitProcess(ExitCode);
 		}
