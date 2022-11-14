@@ -150,6 +150,10 @@ namespace crack_da_pinta_gon
 						Console.WriteLine(Console.Title + "\n\n");
 						continue;
 					}
+					else if (input.Contains("twink"))
+					{
+						//https://www.cyberforum.ru/csharp-net/thread2695637.html
+					}
 
 
 					choice = int.Parse(input);
