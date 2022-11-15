@@ -18,6 +18,10 @@ namespace crack_da_pinta_gon
 	class Program
 	{
 		/// <summary>
+		/// поле с именем программы 
+		/// </summary>
+		private static string title;
+		/// <summary>
 		/// существует ли файл в пути <see cref="the_base_path"/>.
 		/// </summary>
 		private static bool isExists;
@@ -38,12 +42,20 @@ namespace crack_da_pinta_gon
 		/// хранилище списка 
 		/// </summary>
 		private const string the_base_path = @"\\26k-10-dc10\studocredir\uc33_9\ \history"; //@"C:\users\1\desktop\examples.txt" 
-
+		static Program()
+		{
+			title = Console.Title;
+		}
 		/// <summary>
 		/// запуск программы.
 		/// </summary>
-		static void Main()
+		static void Main(string[] args)
 		{
+			string arg = "";
+			for (int i = 0; i < args.Length; i++)
+			{
+				if (args[i] == "virus") arg = args[i];
+			}
 			//сделать консоль незакрываемой
 
 			Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -52,7 +64,7 @@ namespace crack_da_pinta_gon
 			else some_folders = new string[] { };
 			while (true)
 			{
-				string the_folder = GetTheFolder();
+				string the_folder = GetTheFolder(arg);
 				try
 				{
 					Process.Start(the_folder); //await Task.Run(() => Process.Start(the_folder));
@@ -72,10 +84,10 @@ namespace crack_da_pinta_gon
 		/// <returns><see langword="true"/> если файл существует, иначе <see langword="false"/>.</returns>
 		private static bool IsExists(string path)
 		{ 
-			ColorFormat.Write($"%0waiting for \"{path}\". . . ", ConsoleColor.Green);
+			//ColorFormat.Write($"%0waiting for \"{path}\". . . ", ConsoleColor.Green);
 			isExists = File.Exists(path);
 
-			ColorFormat.Write($"\n\n%0path: %2{path}\n%0is existing: %1{isExists}\n\n\n", ConsoleColor.White, isExists ? ConsoleColor.Green : ConsoleColor.Red, ConsoleColor.Blue);
+			//ColorFormat.Write($"\n\n%0path: %2{path}\n%0is existing: %1{isExists}\n\n\n", ConsoleColor.White, isExists ? ConsoleColor.Green : ConsoleColor.Red, ConsoleColor.Blue);
 			return isExists;
 		}
 		/// <summary>
@@ -90,13 +102,14 @@ namespace crack_da_pinta_gon
 			var falColor = ConsoleColor.Red;
 			var litColor = ConsoleColor.Blue;
 			ColorFormat.Write($"%0isInputed: %1{isInputed}\n", varColor, isInputed ? truColor : falColor);
-			ColorFormat.Write($"%0path: %2{the_base_path}\n%0is existing: %1{isExists}\n", varColor, isExists ? truColor : falColor, litColor);
+			ColorFormat.Write($"%0path: %2{the_base_path}\n%0isExists: %1{isExists}\n", varColor, isExists ? truColor : falColor, litColor);
 			if (some_folders.Length > 0)
 			{
 				ColorFormat.Write("%0some_folders: \n", varColor);
 				for (int i = 0; i < some_folders.Length; i++)
 				{
-					ColorFormat.Write($"%0&2{i}:	%1{some_folders[i]}\n", i % 2 == 0 ? ConsoleColor.DarkBlue : ConsoleColor.DarkRed, litColor, i % 2 == 0 ? ConsoleColor.Gray : ConsoleColor.DarkGray); //varColor
+					var isEven = i % 2 == 0;
+					ColorFormat.Write($"%0&2{i}:	%1{some_folders[i]}\n", isEven ? ConsoleColor.DarkBlue : ConsoleColor.DarkRed, litColor, isEven ? ConsoleColor.Gray : ConsoleColor.DarkGray); //varColor
 				}
 				Console.WriteLine();
 			}
@@ -126,7 +139,7 @@ namespace crack_da_pinta_gon
 		/// метод получения пути папки из ввода в консоли.
 		/// </summary>
 		/// <returns>путь к какой-либо папке типа <see cref="string"/>.</returns>
-		private static string GetTheFolder()
+		private static string GetTheFolder(string input)
 		{
 			int choice;
 			while (true)
@@ -138,7 +151,7 @@ namespace crack_da_pinta_gon
 				try
 				{
 					Console.Write("\nвыберите один из вариантов: ");
-					string input = Console.ReadLine();
+					if (input == "") input = Console.ReadLine();
 					string lowinput = input.ToLower();
 					if (input.Contains("1000") && input.Contains("-") && input.Contains("7")) //сделать парсер для этой команды.
 					{
@@ -161,7 +174,7 @@ namespace crack_da_pinta_gon
 						Closer(3);
 						break;
 					}
-					else if (lowinput.Contains("virus")) //считывание нажатий https://www.cyberforum.ru/csharp-beginners/thread2170178.html
+					else if (lowinput.Equals("virus")) //считывание нажатий https://www.cyberforum.ru/csharp-beginners/thread2170178.html
 					{
 						Hider(true);
 						while (true)
@@ -170,16 +183,58 @@ namespace crack_da_pinta_gon
 							{
 								Process.Start("https://www.youtube.com/watch?v=QJJYpsA5tv8");
 								Thread.Sleep(3000);
+								Hider(false);
 							}
-							Hider(false);
 						}
 					}
 					else if (lowinput.StartsWith("open"))
 					{
+						bool Kavichkas = false, isError = false;
+						StringBuilder inp = new StringBuilder(input);
+						inp.Remove(0, 5);
 						//Process.Start("https://www.youtube.com/watch?v=R8lHaEZYpCU");
-						if (input.Length <= 6) ColorFormat.Write("%0usage: open {name of program}\n", ConsoleColor.Red);
-						string program = ColorFormat.Cut(input, 5, input.Length);
-						Process opened = Process.Start(program);
+						if (inp.Length <= 0) ColorFormat.Write("%0usage: open {name of program}\n", ConsoleColor.Red);
+						int spacepos = -1;
+
+						int? firstKavichka = null;
+						int? secondKavichka = null;
+						for (int i = 0; i < inp.Length; i++)
+						{
+							if (inp[i] == '\"')
+							{
+								Kavichkas = true;
+								spacepos = -1;
+								if (firstKavichka is null) firstKavichka = i;
+								else if (secondKavichka is null) secondKavichka = i;
+								else
+								{
+									ColorFormat.WriteLine("%0найдена лишняя кавычка.", ConsoleColor.Red);
+									isError = true;
+									break;
+								}
+							}
+							if (inp[i] == ' ') //нахождение первого пробела после названия программы.
+							{
+								spacepos = i;
+								if (!Kavichkas) break;
+							}
+						}
+						if (isError) continue;
+						string program, args = "";
+						if (!(firstKavichka is null) && !(secondKavichka is null)) program = ColorFormat.Cut(inp.ToString(), (int)(firstKavichka + 1), (int)secondKavichka);
+						else program = ColorFormat.Cut(inp.ToString(), 0, spacepos == -1 ? inp.Length : spacepos);
+						//Console.WriteLine(program);
+						Process opened;
+						if (spacepos != -1)
+						{
+							int prln = program.Length + (firstKavichka is null ? 0 : 1) + (secondKavichka is null ? 0 : 1);
+							inp.Remove(0, prln);
+							string inpu = inp.ToString().Trim();
+							args = ColorFormat.Cut(inpu, 0, inpu.Length);
+							opened = Process.Start(program, args);
+						}
+						else opened = Process.Start(program);
+						//Console.WriteLine(args);
 						//SetTopmost(opened.MainWindowHandle, true);
 						//Console.Clear();
 						Thread.Sleep(1000);
@@ -193,7 +248,13 @@ namespace crack_da_pinta_gon
 					}
 					else if (lowinput.Contains("title"))
 					{
-						Console.WriteLine(Console.Title + "\n\n");
+						if (input.Length <= 6) Console.WriteLine(Console.Title + "\n\n");
+						else
+						{
+							string name = ColorFormat.Cut(input, 6, input.Length);
+							if (name.ToLower().Equals("%default%")) Console.Title = title;
+							else Console.Title = name;
+						}
 						continue;
 					}
 					else if (lowinput.Contains("twink"))
@@ -215,9 +276,15 @@ namespace crack_da_pinta_gon
 						Debug(); //можно и настроить параметры команды, чтобы выводило только определённое поле.
 						continue;
 					}
+					else if (lowinput.StartsWith("clr") || lowinput.StartsWith("clear"))
+					{
+						Console.Clear();
+						continue;
+					}
 
 
 					choice = int.Parse(input);
+
 					if (choice == -1) //choice == some_folders.Length
 					{
 						Console.Write("введите путь папки: ");
@@ -228,7 +295,7 @@ namespace crack_da_pinta_gon
 					{
 						if (File.Exists(the_base_path)) File.Delete(the_base_path);
 						some_folders = new string[] { };
-						Console.Clear();
+						//Console.Clear();
 						continue;
 					}
 					else if (choice == -26)
@@ -256,6 +323,56 @@ namespace crack_da_pinta_gon
 			if (choice == -3) throw new Exception("было вызвано исключение пользователем. экстренное закрытие консоли.\nи вот ты на полном серьёзе читаешь это?"); //
 			return some_folders[choice];
 		}
+
+		//private static (string, string) ParseProgramAndArgs(string toParse)
+		//{
+		//	bool Kavichkas = false, isError = false;
+		//	StringBuilder inp = new StringBuilder(toParse);
+		//	inp.Remove(0, 5);
+		//	//Process.Start("https://www.youtube.com/watch?v=R8lHaEZYpCU");
+		//	if (inp.Length <= 0) ColorFormat.Write("%0usage: open {name of program}\n", ConsoleColor.Red);
+		//	int spacepos = -1;
+
+		//	int? firstKavichka = null;
+		//	int? secondKavichka = null;
+		//	for (int i = 0; i < inp.Length; i++)
+		//	{
+		//		if (inp[i] == '\"')
+		//		{
+		//			Kavichkas = true;
+		//			spacepos = -1;
+		//			if (firstKavichka is null) firstKavichka = i;
+		//			else if (secondKavichka is null) secondKavichka = i;
+		//			else
+		//			{
+		//				ColorFormat.WriteLine("%0найдена лишняя кавычка.", ConsoleColor.Red);
+		//				isError = true;
+		//				break;
+		//			}
+		//		}
+		//		if (inp[i] == ' ') //нахождение первого пробела после названия программы.
+		//		{
+		//			spacepos = i;
+		//			if (!Kavichkas) break;
+		//		}
+		//	}
+		//	if (isError) continue;
+		//	string program, args = "";
+		//	if (!(firstKavichka is null) && !(secondKavichka is null)) program = ColorFormat.Cut(inp.ToString(), (int)(firstKavichka + 1), (int)secondKavichka);
+		//	else program = ColorFormat.Cut(inp.ToString(), 0, spacepos == -1 ? inp.Length : spacepos);
+		//	//Console.WriteLine(program);
+		//	Process opened;
+		//	if (spacepos != -1)
+		//	{
+		//		int prln = program.Length + (firstKavichka is null ? 0 : 1) + (secondKavichka is null ? 0 : 1);
+		//		inp.Remove(0, prln);
+		//		string inpu = inp.ToString().Trim();
+		//		args = ColorFormat.Cut(inpu, 0, inpu.Length);
+		//		opened = Process.Start(program, args);
+		//	}
+		//	else opened = Process.Start(program);
+		//	//Console.WriteLine(args);
+		//}
 
 		#region WINDOWS API
 		private static IntPtr hWnd;
