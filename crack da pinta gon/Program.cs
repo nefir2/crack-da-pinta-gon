@@ -48,7 +48,7 @@ namespace crack_da_pinta_gon
 		/// <summary>
 		/// запуск программы.
 		/// </summary>
-		static void Main(string[] args)
+		private static void Main(string[] args)
 		{
 			string arg = "";
 			for (int i = 0; i < args.Length; i++)
@@ -140,6 +140,7 @@ namespace crack_da_pinta_gon
 		/// <returns>путь к какой-либо папке типа <see cref="string"/>.</returns>
 		private static string GetTheFolder(string input)
 		{
+			bool isUsed = false;
 			int choice;
 			while (true)
 			{
@@ -150,7 +151,8 @@ namespace crack_da_pinta_gon
 				try
 				{
 					Console.Write("\nвыберите один из вариантов: ");
-					if (input == "") input = Console.ReadLine();
+					if (input == "" || isUsed) input = Console.ReadLine();
+					else isUsed = true;
 					string lowinput = input.ToLower();
 					if (input.Contains("1000") && input.Contains("-") && input.Contains("7")) //сделать парсер для этой команды.
 					{
