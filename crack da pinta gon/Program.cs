@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
-using System.Windows;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -18,7 +17,7 @@ namespace crack_da_pinta_gon
 	class Program
 	{
 		/// <summary>
-		/// поле с именем программы 
+		/// поле со стандартным титулом программы 
 		/// </summary>
 		private static string title;
 		/// <summary>
@@ -403,7 +402,7 @@ namespace crack_da_pinta_gon
 		#endregion
 
 		/// <summary>
-		/// установка главного поверх всех окон.
+		/// установка главного окна поверх всех окон.
 		/// </summary>
 		/// <param name="topmost">
 		/// если значение <see langword="true"/>, консоль поверх всех окон, <br/>
@@ -423,7 +422,7 @@ namespace crack_da_pinta_gon
 		/// <summary>
 		/// установка указанного окна поверх всех окон.
 		/// </summary>
-		/// <param name="hWnd">окно, которое должно быть поверх всех.</param>
+		/// <param name="hWnd">окно, к которому применяется метод.</param>
 		/// <param name="topmost">
 		/// если значение <see langword="true"/>, консоль поверх всех окон, <br/>
 		/// иначе если <see langword="false"/> - не поверх всех окон.
