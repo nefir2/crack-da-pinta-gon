@@ -51,10 +51,22 @@ namespace crack_da_pinta_gon
 		private static void Main(string[] args)
 		{
 			string arg = "";
-			for (int i = 0; i < args.Length; i++)
+			if (args.Length > 0)
 			{
-				if (args[i] == "virus") arg = args[i];
+				string prog = args[0];
+				StringBuilder ar = new StringBuilder("");
+				if (args.Length > 1)
+				{
+					for (int i = 1; i < args.Length; i++) ar = ar.Append(args[i]);
+				}
+
+				Process.Start(prog, ar.ToString());
+				return;
 			}
+			//for (int i = 0; i < args.Length; i++)
+			//{
+			//	if (args[i] == "virus") arg = args[i];
+			//}
 			//сделать консоль незакрываемой
 
 			Console.ForegroundColor = ConsoleColor.DarkGray;
