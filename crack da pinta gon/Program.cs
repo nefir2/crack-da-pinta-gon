@@ -50,6 +50,7 @@ namespace crack_da_pinta_gon
 		/// </summary>
 		private static void Main(string[] args)
 		{
+			foreach (var s in args) Console.Write(s + " : ");
 			string arg = "";
 			if (args.Length > 0)
 			{
