@@ -41,10 +41,7 @@ namespace crack_da_pinta_gon
 		/// хранилище списка 
 		/// </summary>
 		private const string the_base_path = @"\\26k-10-dc10\studocredir\uc33_9\ \history"; //@"C:\users\1\desktop\examples.txt" 
-		static Program()
-		{
-			title = Console.Title;
-		}
+		static Program() => title = Console.Title;
 		/// <summary>
 		/// запуск программы.
 		/// </summary>
